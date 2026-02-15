@@ -4,21 +4,16 @@
 if [ -n "$1" ]; then
     WALLPAPER="$1"
 
-    # Generate colors with pywal
-    if ! wal -i "$WALLPAPER"; then
+    # Generate colors with pywal (skip setting wallpaper with -n)
+    if ! wal -i "$WALLPAPER" -n; then
         echo "Error: wal failed to generate colors."
         exit 1
     fi
 
-    # Update Hyprpaper
+    # Update Hyprpaper using modern IPC
+    # Note: hyprpaper now auto-preloads the image if not already loaded
     if pgrep hyprpaper >/dev/null; then
          echo "Updating Hyprpaper..."
-         # Unload the wallpaper first to force a reload from disk
-         hyprctl hyprpaper unload "$WALLPAPER"
-         
-         # Preload the new wallpaper
-         hyprctl hyprpaper preload "$WALLPAPER"
-         
          # Get all connected monitor names
          MONITORS=$(hyprctl monitors -j | jq -r '.[].name')
          
@@ -40,9 +35,11 @@ fi
 pywalfox update
 
 # 3. Force Kitty Color Reload (Robustness)
-if [ -S /tmp/kitty_pywal ]; then
-    kitty @ --to unix:/tmp/kitty_pywal set-colors --all --configured ~/.cache/wal/colors-kitty.conf
-fi
+for socket in /tmp/kitty-*; do
+    if [ -S "$socket" ]; then
+        kitty @ --to "unix:$socket" set-colors --all --configured ~/.cache/wal/colors-kitty.conf
+    fi
+done
 
 # 4. Reload Waybar to pick up new colors
 pkill -SIGUSR2 waybar

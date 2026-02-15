@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<doublecmd DCVersion="1.1.30 gamma" ConfigVersion="15">
+<doublecmd DCVersion="1.2.1 beta" ConfigVersion="15">
   <Toolbars>
     <MainToolbar>
       <Row>
@@ -19,7 +19,7 @@
           <Command>cm_Options</Command>
         </Command>
         <Separator>
-          <Style>False</Style>
+          <Style>0</Style>
         </Separator>
         <Command>
           <ID>{42692EFC-20C3-4C2E-923E-9AF976F68EB0}</ID>
@@ -37,7 +37,7 @@
           <Command>cm_ThumbnailsView</Command>
         </Command>
         <Separator>
-          <Style>False</Style>
+          <Style>0</Style>
         </Separator>
         <Command>
           <ID>{797EEAB4-ED5A-45CA-A2EE-F52F24486213}</ID>
@@ -45,7 +45,7 @@
           <Command>cm_FlatView</Command>
         </Command>
         <Separator>
-          <Style>False</Style>
+          <Style>0</Style>
         </Separator>
         <Command>
           <ID>{0571215D-C4EC-4374-9117-67E521D641A2}</ID>
@@ -58,7 +58,7 @@
           <Command>cm_ViewHistoryNext</Command>
         </Command>
         <Separator>
-          <Style>False</Style>
+          <Style>0</Style>
         </Separator>
         <Command>
           <ID>{9F668F8A-EC93-4F5D-A342-C1D4C6210EBF}</ID>
@@ -76,7 +76,7 @@
           <Command>cm_MarkInvert</Command>
         </Command>
         <Separator>
-          <Style>False</Style>
+          <Style>0</Style>
         </Separator>
         <Command>
           <ID>{E3C73A0A-C4A6-447A-929B-568FD87757C6}</ID>
@@ -89,7 +89,7 @@
           <Command>cm_ExtractFiles</Command>
         </Command>
         <Separator>
-          <Style>False</Style>
+          <Style>0</Style>
         </Separator>
         <Command>
           <ID>{F5712263-BD4A-4BF2-B939-B36778593161}</ID>
@@ -155,10 +155,10 @@
     <Position Save="True">
       <Left>0</Left>
       <Top>0</Top>
-      <Width>1915</Width>
-      <Height>1027</Height>
-      <PixelsPerInch>96</PixelsPerInch>
-      <Maximized>False</Maximized>
+      <Width>1919</Width>
+      <Height>2086</Height>
+      <PixelsPerInch>110</PixelsPerInch>
+      <Maximized>True</Maximized>
       <Splitter>50</Splitter>
     </Position>
   </MainWindow>
@@ -201,6 +201,7 @@
       <SingleClickStart>0</SingleClickStart>
       <ScrollMode>1</ScrollMode>
       <WheelScrollLines>3</WheelScrollLines>
+      <ZoomWithCtrlWheel>True</ZoomWithCtrlWheel>
     </Mouse>
     <AutoFillColumns>False</AutoFillColumns>
     <AutoSizeColumn>1</AutoSizeColumn>
@@ -369,6 +370,7 @@
     <DriveBar1>True</DriveBar1>
     <DriveBar2>True</DriveBar2>
     <DriveBarFlat>True</DriveBarFlat>
+    <DriveBarFreeSpace>False</DriveBarFreeSpace>
     <DrivesListButton Enabled="True">
       <ShowLabel>True</ShowLabel>
       <ShowFileSystem>True</ShowFileSystem>
@@ -491,6 +493,7 @@
       <MulRenPathRangeSeparator>- </MulRenPathRangeSeparator>
     </MultiRename>
     <DefaultDropEffect>True</DefaultDropEffect>
+    <AutoCopyBackward>True</AutoCopyBackward>
   </FileOperations>
   <Tabs>
     <Options>54033</Options>
@@ -505,7 +508,7 @@
   <Configuration Save="True" SortOrder="1" TreeType="0">
     <FolderTabs Save="True"/>
   </Configuration>
-  <History>
+  <History MaxStringItems="50">
     <SearchReplaceHistory Save="True"/>
     <DirHistory Save="True" Count="30"/>
     <CmdLineHistory Save="True"/>
@@ -571,7 +574,7 @@
     <Exclude>False</Exclude>
     <ExcludeDirs/>
     <CustomIcons>0</CustomIcons>
-    <PixelsPerInch>96</PixelsPerInch>
+    <PixelsPerInch>110</PixelsPerInch>
     <ShowInMenus Enabled="False">
       <Size>16</Size>
     </ShowInMenus>
@@ -763,14 +766,14 @@
       <Unique>2082DC5B-A376-49D3-ACBD-C06BAC613F73</Unique>
       <CustomView>False</CustomView>
       <FileSystem>&lt;General&gt;</FileSystem>
-      <PixelsPerInch>96</PixelsPerInch>
+      <PixelsPerInch>110</PixelsPerInch>
       <CursorBorder Enabled="False"/>
       <Columns>
         <Column>
           <Title>Name</Title>
           <Unique>343C295E-9B03-4DE0-B341-9B10B34DD031</Unique>
           <FuncString>[DC().GETFILENAMENOEXT{}]</FuncString>
-          <Width>446</Width>
+          <Width>701</Width>
           <Align>0</Align>
           <Font>
             <Name>default</Name>
@@ -786,7 +789,7 @@
           <Title>Ext</Title>
           <Unique>98DC02A4-5AA4-4861-BCB2-69B278429EB0</Unique>
           <FuncString>[DC().GETFILEEXT{}]</FuncString>
-          <Width>50</Width>
+          <Width>57</Width>
           <Align>0</Align>
           <Font>
             <Name>default</Name>
@@ -802,7 +805,7 @@
           <Title>Size</Title>
           <Unique>6EACF2F0-B17A-4BE0-B68B-2F7431A01D0E</Unique>
           <FuncString>[DC().GETFILESIZE{}]</FuncString>
-          <Width>70</Width>
+          <Width>80</Width>
           <Align>1</Align>
           <Font>
             <Name>default</Name>
@@ -818,7 +821,7 @@
           <Title>Date</Title>
           <Unique>BE2E5CAB-9E63-4922-AABF-1D6FD213BBAD</Unique>
           <FuncString>[DC().GETFILETIME{}]</FuncString>
-          <Width>140</Width>
+          <Width>160</Width>
           <Align>1</Align>
           <Font>
             <Name>default</Name>
@@ -834,7 +837,7 @@
           <Title>Attr</Title>
           <Unique>9167E868-5D18-46FB-A243-8A8AA8C68202</Unique>
           <FuncString>[DC().GETFILEATTR{}]</FuncString>
-          <Width>100</Width>
+          <Width>115</Width>
           <Align>0</Align>
           <Font>
             <Name>default</Name>
@@ -849,7 +852,7 @@
       </Columns>
     </ColumnsSet>
   </ColumnsSets>
-  <Plugins>
+  <Plugins Version="3">
     <DsxPlugins/>
     <WcxPlugins>
       <WcxPlugin Enabled="True">
@@ -951,6 +954,96 @@
         <ArchiveExt>b64</ArchiveExt>
         <Path>%commander_path%/plugins/wcx/base64/base64.wcx</Path>
         <Flags>1</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>7z</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>607</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="True">
+        <ArchiveExt>br</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/zip/zip.wcx</Path>
+        <Flags>64</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>arj</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>cab</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>cramfs</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>dmg</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>fat</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>hfs</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>iso</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>lha</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>lzh</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>ntfs</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>squashfs</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>taz</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>vhd</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>wim</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>85</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>xar</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
+      </WcxPlugin>
+      <WcxPlugin Enabled="False">
+        <ArchiveExt>z</ArchiveExt>
+        <Path>%commander_path%/plugins/wcx/sevenzip/sevenzip.wcx</Path>
+        <Flags>4</Flags>
       </WcxPlugin>
     </WcxPlugins>
     <WdxPlugins>

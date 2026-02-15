@@ -42,13 +42,47 @@ while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
             exit 1
         fi
     elif [ "$WALLPAPER_SOURCE" == "wallhaven" ]; then
-        # Fetch JSON from Wallhaven with a cache-buster/seed to ensure randomness? 
-        # "sorting=random" should be enough, but let's be sure.
+        # Fetch JSON from Wallhaven
         log_message "Fetching wallpaper list from Wallhaven..."
         API_RESPONSE=$(curl -s "$WALLPAPER_URL")
         
-        # Extract the URL of the first image in the random list
-        IMAGE_URL=$(echo "$API_RESPONSE" | jq -r '.data[0].path')
+        # History file to track seen wallpapers
+        HISTORY_FILE="$HOME/.cache/wallpaper_history.txt"
+        if [ ! -f "$HISTORY_FILE" ]; then touch "$HISTORY_FILE"; fi
+
+        # Parse valid images (ID and URL) from the response
+        # We get a list of "ID|URL" strings
+        CANDIDATES=$(echo "$API_RESPONSE" | jq -r '.data[] | "\(.id)|\(.path)"')
+
+        FOUND_NEW=false
+        
+        # Iterate through candidates to find one not in history
+        while IFS='|' read -r ID URL; do
+            if [ -z "$ID" ] || [ -z "$URL" ]; then continue; fi
+            
+            if ! grep -qxF "$ID" "$HISTORY_FILE"; then
+                # Found a new wallpaper
+                IMAGE_URL="$URL"
+                IMAGE_ID="$ID"
+                FOUND_NEW=true
+                log_message "Selected fresh wallpaper: $ID"
+                
+                # Add to history and trim to last 50
+                echo "$ID" >> "$HISTORY_FILE"
+                tail -n 50 "$HISTORY_FILE" > "$HISTORY_FILE.tmp" && mv "$HISTORY_FILE.tmp" "$HISTORY_FILE"
+                
+                break
+            fi
+        done <<< "$CANDIDATES"
+
+        # Fallback: If all candidates in this batch were seen, just pick the first one
+        if [ "$FOUND_NEW" = false ]; then
+            log_message "Warning: All returned wallpapers match history. Picking the first one anyway."
+            # Extract first one manually
+            FIRST_LINE=$(echo "$CANDIDATES" | head -n 1)
+            IMAGE_ID="${FIRST_LINE%%|*}"
+            IMAGE_URL="${FIRST_LINE#*|}"
+        fi
         
         if [ -n "$IMAGE_URL" ] && [ "$IMAGE_URL" != "null" ]; then
             log_message "Found Wallhaven image: $IMAGE_URL"

@@ -11,3 +11,5 @@ export XDG_SESSION_TYPE=wayland
 export GBM_BACKEND=nvidia-drm
 export MOZ_DRM_DEVICE=/dev/dri/by-path/pci-0000:01:00.0-render
 export CUDA_DISABLE_PERF_BOOST=1
+export GDK_DPI_SCALE=1.15
+export QT_FONT_DPI=110

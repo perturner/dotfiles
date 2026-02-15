@@ -1,5 +1,6 @@
 {
     "layer": "top",
+    "reload_style_on_change": true,
     "position": "bottom",
     "height": 36,
     "spacing": 4,
@@ -42,7 +43,7 @@
     },
 
     "custom/spotify": {
-        "exec": "/usr/bin/playerctl -p spotify metadata --format '{{artist}} - {{title}}'",
+        "exec": "/usr/bin/playerctl -p spotify metadata --format '{{artist}} - {{title}}' 2> /dev/null",
         "format": " {}",
         "interval": 2,
         "on-click": "playerctl -p spotify play-pause",
@@ -100,12 +101,13 @@
         "orientation": "horizontal",
         "modules": [
             "memory",
+            "custom/ram-temp",
             "custom/disk"
         ]
     },
 
     "custom/disk": {
-        "exec": "~/.config/waybar/scripts/disk.sh",
+        "exec": "~/.config/waybar/scripts/system-stats.sh disk",
         "return-type": "json",
         "format": "{}",
         "interval": 30,
@@ -113,10 +115,18 @@
     },
     
     "custom/cpu-temp": {
-        "exec": "~/.config/waybar/scripts/cpu-temp.sh",
+        "exec": "~/.config/waybar/scripts/system-stats.sh cpu",
         "return-type": "json",
         "format": "{}",
         "interval": 5,
+        "tooltip": true
+    },
+
+    "custom/ram-temp": {
+        "exec": "~/.config/waybar/scripts/system-stats.sh ram",
+        "return-type": "json",
+        "format": "{}",
+        "interval": 10,
         "tooltip": true
     },
 
@@ -144,7 +154,7 @@
     },
 
     "custom/fans": {
-        "exec": "~/.config/waybar/scripts/fans.sh",
+        "exec": "~/.config/waybar/scripts/system-stats.sh fans",
         "return-type": "json",
         "format": "{}",
         "interval": 5,
@@ -213,7 +223,9 @@
             "car": "",
             "default": ["", "", ""]
         },
-        "on-click": "pavucontrol"
+        "on-click": "pavucontrol",
+        "on-scroll-up": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 2%+",
+        "on-scroll-down": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 2%-"
     },
 
     "tray": {
