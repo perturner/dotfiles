@@ -1,5 +1,26 @@
 #!/bin/bash
 
+ENV_TYPE="home" # Default fallback
+
+# Parse Arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --work)
+            ENV_TYPE="work"
+            shift
+            ;;
+        --home)
+            ENV_TYPE="home"
+            shift
+            ;;
+        *)
+            echo "Unknown option: $1"
+            echo "Usage: ./install.sh [--work|--home]"
+            exit 1
+            ;;
+    esac
+done
+
 # Get the absolute path of the dotfiles directory
 DOTFILES_DIR=$(cd "$(dirname "$0")" && pwd)
 
@@ -36,17 +57,13 @@ done
 # Always link Common
 link_env "common"
 
-# Link Identity Fragment (Path-agnostic email handling)
-if [[ $(hostname) == *"gripen"* ]]; then
-    echo "Detected home environment..."
-    link_env "home"
-    # Ensure identity points to the home version
-    ln -sf "$DOTFILES_DIR/home/.gitconfig_identity" "$HOME/.gitconfig_identity"
-else
-    echo "Detected work environment..."
+# Link Environment-Specific Identity & Files
+if [[ "$ENV_TYPE" == "work" ]]; then
     link_env "work"
-    # Ensure identity points to the work version
     ln -sf "$DOTFILES_DIR/work/.gitconfig_identity" "$HOME/.gitconfig_identity"
+else
+    link_env "home"
+    ln -sf "$DOTFILES_DIR/home/.gitconfig_identity" "$HOME/.gitconfig_identity"
 fi
 
 # Ensure a private git config exists (even if empty)
