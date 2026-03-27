@@ -121,9 +121,10 @@ export PATH="$HOME/.local/bin:$PATH"
 
 ## Git aliases
 alias adog="git log --all --decorate --oneline --graph"
+alias fish="exec fish -l"
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/.local/share/kiro-cli/shell/bashrc.post.bash" ]] && builtin source "${HOME}/.local/share/kiro-cli/shell/bashrc.post.bash"
 export VCPKG_DEFAULT_BINARY_CACHE=~/.vcpkg-cache
-eval "$(starship init bash)"
-. "$HOME/.cargo/env"
+command -v starship &>/dev/null && eval "$(starship init bash)"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"

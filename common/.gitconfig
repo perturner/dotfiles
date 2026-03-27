@@ -1,18 +1,8 @@
 [pull]
 	ff = only
-[credential]
-	helper = /usr/local/bin/git-credential-manager
-	credentialStore = plaintext
-[credential "https://dev.azure.com"]
-	useHttpPath = true
 [user]
 	name = Per Turner
-[url "git@ssh.dev.azure.com:v3/Collection-PTD/Embedded_PCSW/"]
-	insteadOf = git@ssh.dev.azure.com:v3/Embedded_PCSW/_git/
-[url "git@ssh.dev.azure.com:v3/Collection-PTD/KLInternal/"]
-	insteadOf = git@ssh.dev.azure.com:v3/KLInternal/_git/
-[url "git@ssh.dev.azure.com:v3/Collection-PTD/Raptor2Resource/"]
-	insteadOf = git@ssh.dev.azure.com:v3/Raptor2Resource/_git/
+
 [alias]
 	reset-to = "!f() { git fetch origin && git checkout -B \"$1\" origin/master; }; f"
 [core]

@@ -369,7 +369,12 @@ vim.keymap.set('i', 'jk', '<ESC>')
 vim.keymap.set('n', '<leader>ev', ":edit $MYVIMRC<CR>", { desc = "Edit Config" })
 
 -- C++ Switch Header/Source
-vim.keymap.set('n', '<M-o>', "<cmd>ClangdSwitchSourceHeader<cr>")
+vim.keymap.set('n', '<M-o>', function()
+vim.lsp.buf.execute_command({
+    command = "clangd.switchSourceHeader",
+        arguments = { vim.uri_from_bufnr(0) },
+        })
+    end, { desc = "Switch Source/Header" })
 
 -- Auto-cleanup whitespace
 vim.api.nvim_create_autocmd("BufWritePre", { pattern = "*", command = [[%s/\s\+$//e]] })
