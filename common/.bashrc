@@ -119,8 +119,8 @@ if ! shopt -oq posix; then
 fi
 export PATH="$HOME/.local/bin:$PATH"
 
-## Git aliases
-alias adog="git log --all --decorate --oneline --graph"
+## Git aliases are in ~/.gitconfig
+alias g="git"
 alias fish="exec fish -l"
 
 # Kiro CLI post block. Keep at the bottom of this file.

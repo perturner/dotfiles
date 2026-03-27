@@ -3,6 +3,7 @@ if status is-interactive
     if command -q uwsm; and uwsm check may-start
         exec uwsm start hyprland
     end
+    alias g git
 end
 
 # Add ssh key to keyring
