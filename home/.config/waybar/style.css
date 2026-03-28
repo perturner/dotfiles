@@ -3,9 +3,9 @@
 * {
     border: none;
     border-radius: 0;
-    font-family: "JetBrainsMono Nerd Font", Roboto, Helvetica, Arial, sans-serif;
+    font-family: "FiraCode Nerd Font Mono", Roboto, Helvetica, Arial, sans-serif;
     font-size: 17px;
-    min-height: 0;
+    font-weight: 500;
 }
 
 window#waybar {

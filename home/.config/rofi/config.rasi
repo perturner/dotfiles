@@ -1,6 +1,6 @@
 configuration {
     modes: "window,drun,run,ssh";
-    font: "Hack 11";
+    font: "FiraCode Nerd Font Mono Medium 11";
     show-icons: true;
     terminal: "kitty";
     drun-display-format: "{icon} {name}";

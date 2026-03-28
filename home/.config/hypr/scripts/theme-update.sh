@@ -4,8 +4,11 @@
 if [ -n "$1" ]; then
     WALLPAPER="$1"
 
-    # Generate colors with pywal (skip setting wallpaper with -n)
-    if ! wal -i "$WALLPAPER" -n; then
+    # Generate colors with pywal16
+    # --backend colorthief: Vibrant, high-contrast palettes
+    # --saturate 0.6: Ensures colors aren't too "muddy"
+    # --contrast 4.5: Ensures a minimum readable contrast ratio (WCAG AA)
+    if ! wal -i "$WALLPAPER" -n --backend colorthief --saturate 0.6 --contrast 4.5; then
         echo "Error: wal failed to generate colors."
         exit 1
     fi
