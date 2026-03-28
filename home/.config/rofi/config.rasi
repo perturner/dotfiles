@@ -1,6 +1,6 @@
 configuration {
     modes: "window,drun,run,ssh";
-    font: "Hack 10";
+    font: "Hack 11";
     show-icons: true;
     terminal: "kitty";
     drun-display-format: "{icon} {name}";
