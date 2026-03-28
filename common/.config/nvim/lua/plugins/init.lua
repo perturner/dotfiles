@@ -169,9 +169,12 @@ return {
                     ["vim.lsp.util.stylize_markdown"] = true,
                 },
             },
+            cmdline = {
+                view = "cmdline", -- Force the cmdline to the bottom
+            },
             presets = {
-                bottom_search = true, -- use a classic bottom search bar
-                command_palette = false, -- disable the centered command palette
+                bottom_search = true,
+                command_palette = false,
                 long_message_to_split = true,
                 inc_rename = false,
                 lsp_doc_border = true,

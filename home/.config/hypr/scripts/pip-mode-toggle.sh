@@ -1,18 +1,21 @@
 #!/usr/bin/env bash
 
-# Define the monitor description
-MONITOR="desc:Samsung Electric Company Odyssey G95NC HNTX800635"
+# Match the G9 57" specifically
+MONITOR_NAME="DP-4"
 
-# Get current resolution from hyprctl (Corrected jq)
-CURRENT_RES=$(hyprctl monitors -j | jq -r '.[] | select(.description | contains("G95NC")) | "\(.width)x\(.height)"')
+# Get info for this specific monitor
+WIDTH=$(hyprctl monitors -j | jq -r ".[] | select(.name == \"$MONITOR_NAME\") | .width")
 
-if [[ "$CURRENT_RES" == "7680x2160" ]]; then
-    # Switch to PiP Optimized resolution (2.5K equivalent)
-    # Adding cm, auto to match the config
-    hyprctl keyword monitor "$MONITOR, 2560x1440@240, 0x0, 1, bitdepth, 10, cm, auto, vrr, 0"
-    notify-send "Hyprland" "PiP Mode Enabled (2560x1440)"
+# Debug log (optional, you can see this in your notification)
+# notify-send "Debug" "Current Width: $WIDTH"
+
+if [ "$WIDTH" -eq 7680 ]; then
+    # Switch to PiP Mode (1440p 16:9)
+    # Using @auto to ensure the handshake succeeds
+    hyprctl keyword monitor "$MONITOR_NAME, 2560x1440@auto, 0x0, 1, bitdepth, 10"
+    notify-send "Hyprland" "PiP Mode Enabled (1440p 16:9)"
 else
     # Switch back to Native 8K
-    hyprctl keyword monitor "$MONITOR, 7680x2160@240, 0x0, 1, bitdepth, 10, cm, auto, vrr, 0"
-    notify-send "Hyprland" "Native Mode Enabled (7680x2160)"
+    hyprctl keyword monitor "$MONITOR_NAME, 7680x2160@auto, 0x0, 1, bitdepth, 10"
+    notify-send "Hyprland" "Native Mode Enabled (8K 32:9)"
 fi
