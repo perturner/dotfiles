@@ -77,7 +77,8 @@ $character"""
 [directory]
 style = "bold blue"
 format = "[$path]($style)[$read_only]($read_only_style) "
-truncation_length = 4
+truncation_length = 10 # Increase this to show more parent directories
+truncate_to_repo = false # Don't truncate to the git root
 truncation_symbol = "…/"
 
 [character]
@@ -92,7 +93,17 @@ format = "[$symbol$branch]($style) "
 
 [git_status]
 style = "bold red"
-format = "[$all_status$ahead_behind]($style) "
+format = "([$all_status$ahead_behind]($style) )"
+conflicted = "="
+ahead = "⇡"
+behind = "⇣"
+diverged = "⇕"
+untracked = "?"
+stashed = "$"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "✘"
 
 # --- Languages ---
 
@@ -236,13 +247,13 @@ format = "[$symbol($version) ]($style)"
 [username]
 style_user = "bold cyan"
 style_root = "bold red"
-format = "[$user]($style) "
+format = "[$user]($style)"
 disabled = false
-show_always = false
+show_always = true
 
 [hostname]
-ssh_only = true
-format = "on [$hostname](bold red) "
+ssh_only = false
+format = "[@$hostname](bold red) "
 disabled = false
 
 [cmd_duration]
