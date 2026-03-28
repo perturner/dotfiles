@@ -1,0 +1,186 @@
+@import '../../.cache/wal/colors-waybar.css';
+
+* {
+    font-family: "Hack", "Roboto", sans-serif;
+}
+
+.control-center .notification-row:focus,
+.control-center .notification-row:hover {
+    opacity: 1;
+    background: @background;
+}
+
+.notification-row {
+    outline: none;
+    margin: 10px;
+    padding: 0;
+}
+
+.notification {
+    background: @background;
+    border-radius: 12px;
+    border: 2px solid @color1;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
+    padding: 0;
+    margin: 0;
+}
+
+.notification-content {
+    background: transparent;
+    padding: 10px;
+    border-radius: 12px;
+}
+
+.close-button {
+    background: @color1;
+    color: @background;
+    text-shadow: none;
+    padding: 0;
+    border-radius: 100%;
+    margin-top: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+    border: none;
+    min-width: 24px;
+    min-height: 24px;
+}
+
+.close-button:hover {
+    box-shadow: none;
+    background: @color3;
+    transition: all .2s ease-in-out;
+}
+
+.notification-default-action,
+.notification-action {
+    padding: 4px;
+    margin: 0;
+    box-shadow: none;
+    background: transparent;
+    border: none;
+    color: @foreground;
+}
+
+.notification-default-action:hover,
+.notification-action:hover {
+    -gtk-icon-effect: none;
+    background: transparent;
+}
+
+.notification-default-action {
+    border-radius: 12px;
+}
+
+/* When alternative actions are visible */
+.notification-action {
+    border-radius: 8px;
+    background: @color1;
+    color: @background;
+    margin: 6px;
+}
+.notification-action:hover {
+    background: @color3;
+}
+
+.summary {
+    font-size: 16px;
+    font-weight: bold;
+    color: @foreground;
+    text-shadow: none;
+}
+
+.time {
+    font-size: 12px;
+    font-weight: bold;
+    background: transparent;
+    color: @foreground;
+    text-shadow: none;
+    margin-right: 24px;
+}
+
+.body {
+    font-size: 14px;
+    font-weight: normal;
+    color: @foreground;
+    text-shadow: none;
+    background: transparent;
+}
+
+/* Control Center */
+.control-center {
+    background: @background;
+    border: 2px solid @color1;
+    border-radius: 12px;
+    box-shadow: 0 0 20px 0 rgba(0,0,0,0.5);
+}
+
+.control-center-list {
+    background: transparent;
+}
+
+.control-center-list-placeholder {
+    opacity: 0.5;
+}
+
+.floating-notifications {
+    background: transparent;
+}
+
+/* Widgets */
+.widget-title {
+    color: @foreground;
+    background: @background;
+    padding: 10px;
+    margin: 10px;
+    font-size: 1.5rem;
+    border-radius: 12px;
+}
+
+.widget-title > button {
+    font-size: 1rem;
+    color: @background;
+    text-shadow: none;
+    background: @color1;
+    box-shadow: none;
+    border-radius: 8px;
+    border: none;
+    padding: 6px 12px;
+}
+
+.widget-title > button:hover {
+    background: @color3;
+}
+
+.widget-dnd {
+    background: @background;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 12px;
+    color: @foreground;
+}
+
+.widget-dnd > switch {
+    border-radius: 12px;
+    background: @color1;
+}
+
+.widget-dnd > switch:checked {
+    background: @color3;
+}
+
+.widget-dnd > switch slider {
+    background: @foreground;
+    border-radius: 12px;
+}
+
+.widget-mpris {
+    background: @background;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 12px;
+    color: @foreground;
+}
+
+.widget-mpris > box > button {
+    border-radius: 12px;
+}

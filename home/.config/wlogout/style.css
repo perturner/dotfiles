@@ -1,0 +1,53 @@
+@import "/home/per/.cache/wal/colors-waybar.css";
+
+* {
+    background-image: none;
+    font-family: sans-serif;
+}
+
+window {
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 20px;
+}
+
+button {
+    background-color: @background;
+    color: @foreground;
+    border: 2px solid @color2;
+    border-radius: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 25%;
+    margin: 10px;
+    transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+button:hover {
+    background-color: @color2;
+    color: @background;
+    box-shadow: 0 0 10px @color2;
+}
+
+button:active {
+    background-color: @color3;
+}
+
+#lock {
+    background-image: image(url("/usr/share/wlogout/icons/lock.png"));
+}
+
+#logout {
+    background-image: image(url("/usr/share/wlogout/icons/logout.png"));
+}
+
+#suspend {
+    background-image: image(url("/usr/share/wlogout/icons/suspend.png"));
+}
+
+#shutdown {
+    background-image: image(url("/usr/share/wlogout/icons/shutdown.png"));
+}
+
+#reboot {
+    background-image: image(url("/usr/share/wlogout/icons/reboot.png"));
+}
