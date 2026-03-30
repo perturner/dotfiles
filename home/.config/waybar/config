@@ -201,7 +201,7 @@
 
 
     "network": {
-        // "interface": "wlan0", // (Optional) To force the use of this interface
+        "interface": "net0",
         "format-ethernet": "󰈀 {bandwidthDownBytes}↓ {bandwidthUpBytes}↑",
         "tooltip-format": "{ifname} via {gwaddr}",
         "format-linked": "{ifname} (No IP)",
@@ -211,7 +211,6 @@
     },
 
     "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
         "format": "{icon} {volume}%",
         "format-muted": "",
         "format-icons": {

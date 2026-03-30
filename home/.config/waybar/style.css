@@ -18,6 +18,14 @@ window#waybar.hidden {
     opacity: 0.2;
 }
 
+/* Sidebar Reservation Styling */
+window#waybar.sidebar-reserve {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    text-shadow: none;
+}
+
 #workspaces {
     background-color: @background;
     opacity: 0.8;
@@ -112,13 +120,8 @@ window#waybar.hidden {
 #custom-gpu {
     color: @color4;
     min-width: 160px;
-    padding: 0 10px; /* Add padding since it's a standalone module now */
-    font-family: "JetBrainsMono Nerd Font", monospace;
+    padding: 0 10px;
 }
-
-
-
-
 
 /* System Modules */
 #network {
@@ -140,7 +143,6 @@ window#waybar.hidden {
     border-radius: 16px;
     color: @color2;
     border: 1px solid @color4;
-    font-family: "JetBrainsMono Nerd Font", monospace;
 }
 
 #tray {

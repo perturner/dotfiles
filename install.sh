@@ -34,8 +34,8 @@ link_env() {
 
     echo "Linking $1 environment..."
 
-    # Find all files recursively, ignoring directories
-    cd "$env_folder" && find . -type f | while read -r file; do
+    # Find all files recursively, ignoring directories and .disabled files
+    cd "$env_folder" && find . -type f ! -name "*.disabled" | while read -r file; do
     # Strip the leading './'
     local rel_path="${file#./}"
     local src="$env_folder/$rel_path"

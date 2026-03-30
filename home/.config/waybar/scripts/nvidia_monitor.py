@@ -1,4 +1,8 @@
-#!/home/per/.config/waybar/venv/bin/python3
+#!/usr/bin/env python3
+
+import warnings
+# Suppress the 'pynvml package is deprecated' warning from nvidia-ml-py
+warnings.filterwarnings("ignore", message="The pynvml package is deprecated")
 
 import pynvml
 import sys
