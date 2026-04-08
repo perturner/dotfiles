@@ -11,7 +11,12 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Initialize Plugins
-require("lazy").setup("plugins")
+require("lazy").setup({
+  spec = {
+    -- This loads lua/plugins/init.lua AND lua/plugins/diffview.lua, etc.
+    { import = "plugins" },
+  },
+})
 
 -- Load Keymaps & Autocmds
 require("config.keymaps")
@@ -33,3 +38,31 @@ vim.diagnostic.config({
     float = { border = "rounded" },
     severity_sort = true,
 })
+
+local function switch_source_header()
+  local bufnr = vim.api.nvim_get_current_buf()
+  -- Use the modern 0.11 API
+  local clients = vim.lsp.get_clients({ bufnr = bufnr, name = "clangd" })
+
+  if #clients == 0 then
+    print("clangd not attached to this buffer")
+    return
+  end
+
+  -- This is the raw LSP call clangd expects
+  vim.lsp.buf_request(bufnr, "textDocument/switchSourceHeader", { uri = vim.uri_from_bufnr(bufnr) }, function(err, result)
+    if err then
+      vim.notify("Clangd Error: " .. err.message, vim.log.levels.ERROR)
+      return
+    end
+    if not result then
+      vim.notify("No peer header/source found", vim.log.levels.WARN)
+      return
+    end
+    -- result is a URI string like "file:///path/to/file.cpp"
+    vim.api.nvim_command("edit " .. vim.uri_to_fname(result))
+  end)
+end
+
+-- Bind it to a key
+vim.keymap.set("n", "<A-o>", switch_source_header, { desc = "Switch Header/Source" })

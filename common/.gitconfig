@@ -1,38 +1,43 @@
 [pull]
-	ff = only
+    ff = only
 [user]
-	name = Per Turner
+    name = Per Turner
 
 [alias]
-	s = status -sb
-	d = diff
-	ds = diff --staged
-	a = add
-	aa = add -A
-	au = add -u
-	c = commit
-	cm = commit -m
-	ca = commit --amend --no-edit
-	co = checkout
-	cb = checkout -b
-	p = push
-	pf = push --force-with-lease
-	pl = pull
-	l = log --oneline -20
-	lg = log --oneline --graph --all --decorate
-	last = log -1 --stat
-	undo = reset --soft HEAD~1
-	unstage = reset HEAD --
-	reset-to = "!f() { git fetch origin && git checkout -B \"$1\" origin/master; }; f"
+    s = status -sb
+    d = diff
+    ds = diff --staged
+    a = add
+    aa = add -A
+    au = add -u
+    c = commit
+    cm = commit -m
+    ca = commit --amend --no-edit
+    co = checkout
+    cb = checkout -b
+    p = push
+    pf = push --force-with-lease
+    pl = pull
+    l = log --oneline -20
+    lg = log --oneline --graph --all --decorate
+    last = log -1 --stat
+    undo = reset --soft HEAD~1
+    unstage = reset HEAD --
+    reset-to = "!f() { git fetch origin && git checkout -B \"$1\" origin/master; }; f"
 [core]
-	pager = delta
-	editor = nvim
+    pager = delta
+    editor = nvim
+[diff]
+    colorMoved = default
 [interactive]
-	diffFilter = delta --color-only
+    diffFilter = delta --color-only
 [delta]
-	side-by-side = true
-	line-numbers = true
-	navigate = true
+    side-by-side = true
+    line-numbers = true
+    navigate = true
+    features = wolly-mammoth
 [include]
-	path = ~/.gitconfig_identity
-	path = ~/.gitconfig_private
+    path = ~/.gitconfig_identity
+    path = ~/.gitconfig_private
+    path = ~/.config/delta/themes.gitconfig
+

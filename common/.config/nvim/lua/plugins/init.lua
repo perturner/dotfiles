@@ -4,8 +4,8 @@ return {
     -- AESTHETICS
     {
         "EdenEast/nightfox.nvim",
-        lazy = false,
-        priority = 1000,
+        lazy = true,
+        -- priority = 1000,
         config = function()
             require("nightfox").setup({
                 options = {
@@ -16,13 +16,37 @@ return {
         end,
     },
     {
+        "maxmx03/solarized.nvim",
+        lazy = true,
+        -- priority = 1000,
+        config = function()
+            vim.o.termguicolors = true
+            vim.cmd.colorscheme('solarized')
+        end,
+    },
+    { "folke/tokyonight.nvim", lazy = true },
+    { "rebelot/kanagawa.nvim", lazy = true },
+    {
+        "neanias/everforest-nvim",
+        lazy = true,
+        -- priority = 1000,
+        config = function()
+            require("everforest").setup({
+                background = "soft", -- Best for eye strain and G9 panels
+                ui_contrast = "low",
+            })
+        vim.cmd("colorscheme everforest")
+        end,
+    },
+    { "catppuccin/nvim", name = "catppuccin", lazy = true },
+    {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         config = function()
             require("nvim-treesitter").setup({
-                ensure_installed = { 
-                    "cpp", "python", "lua", "cmake", "markdown", "vimdoc", 
-                    "proto", "bash", "json", "toml", "c_sharp", "bitbake" 
+                ensure_installed = {
+                    "cpp", "python", "lua", "cmake", "markdown", "vimdoc",
+                    "proto", "bash", "json", "toml", "c_sharp", "bitbake"
                 },
                 highlight = { enable = true },
                 indent = { enable = true }
@@ -31,8 +55,8 @@ return {
     },
     { "nvim-tree/nvim-web-devicons", lazy = false },
     { "echasnovski/mini.completion", version = false, config = true },
-    { 
-        "stevearc/oil.nvim", 
+    {
+        "stevearc/oil.nvim",
         opts = {
             view_options = {
                 show_hidden = true,
@@ -40,11 +64,25 @@ return {
                     return name == ".. " or name == ".git"
                 end,
             },
-        }, 
-        dependencies = { "nvim-tree/nvim-web-devicons" }, 
-        lazy = false 
+        },
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        lazy = false
     },
     { "numToStr/Comment.nvim", opts = {}, lazy = false },
+    {
+        "lewis6991/satellite.nvim",
+        opts = {
+            current_win_only = false,
+            winblend = 50,
+            zindex = 40,
+            handlers = {
+                search = { enable = true },
+                diagnostic = { enable = true },
+                gitsigns = { enable = true },
+                marks = { enable = true },
+            },
+        },
+    },
 
     -- LSP: The Intelligence
     {
@@ -56,10 +94,10 @@ return {
         },
         config = function()
             require("mason").setup()
-            require("mason-lspconfig").setup({ 
-                ensure_installed = { 
-                    "clangd", "basedpyright", "ruff", "buf_ls", "bashls", "omnisharp" 
-                } 
+            require("mason-lspconfig").setup({
+                ensure_installed = {
+                    "clangd", "basedpyright", "ruff", "buf_ls", "bashls", "omnisharp"
+                }
             })
 
             local navic = require('nvim-navic')
@@ -106,54 +144,62 @@ return {
             vim.lsp.enable('basedpyright')
             vim.lsp.enable('ruff')
             vim.lsp.enable('buf_ls')
-            vim.lsp.enable('bashls')
+            vim.lsp.config('bashls', {
+                cmd = { 'bash-language-server', 'start' },
+               filetypes = { 'sh', 'bash' },
+               settings = {
+                   bashIde = {
+                       -- Ensure shellcheck is installed (via Mason or apt)
+                       shellcheckPath = 'shellcheck',
+      -- Optional: filter which files are analyzed
+      globPattern = "*@(.sh|.inc|.bash|.command)",
+    },
+  },
+  -- Define how Neovim finds the root of your script project
+  root_markers = { '.git', 'install.sh', 'requirements.txt' },
+})
             vim.lsp.enable('omnisharp')
         end
     },
 
     -- TELESCOPE & CMAKE
-    { 
-        "nvim-telescope/telescope.nvim", 
-        dependencies = { "nvim-lua/plenary.nvim" }, 
+    {
+        "nvim-telescope/telescope.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
         keys = {
             { "<C-p>", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
             { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
             { "<leader><leader>", "<cmd>Telescope buffers<cr>", desc = "Switch Buffers" },
             { "<C-e>", "<cmd>Telescope oldfiles<cr>", desc = "Recent Files" },
         },
-        opts = { 
-            defaults = { 
-                layout_strategy = "horizontal",
-                layout_config = { width = 0.95, preview_width = 0.5 },
-            },
+        opts = {
             pickers = {
                 find_files = {
                     hidden = true, -- Show hidden files (dotfiles)
                 },
             },
-        } 
+        }
     },
     { "Civitasv/cmake-tools.nvim", opts = { cmake_build_directory = "build/${variant:buildType}" } },
 
     -- GIT & UI EXTRAS
     { "lewis6991/gitsigns.nvim", opts = { signs = { add = { text = '┃' }, change = { text = '┃' } } } },
-    { "sindrets/diffview.nvim", cmd = { "DiffviewOpen", "DiffviewFileHistory" } },
     { "ThePrimeagen/harpoon", branch = "harpoon2", config = true },
     { "HiPhish/rainbow-delimiters.nvim" },
     { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
     { "windwp/nvim-autopairs", event = "InsertEnter", config = true },
     { "tpope/vim-obsession", cmd = "Obsession" },
-    { 
-        "stevearc/conform.nvim", 
-        opts = { 
+    {
+        "stevearc/conform.nvim",
+        opts = {
             formatters_by_ft = {
                 cpp = { "clang-format" },
                 python = { "ruff_format" },
                 proto = { "buf" },
                 bash = { "shfmt" },
             },
-            format_on_save = { lsp_fallback = true } 
-        } 
+            format_on_save = { lsp_fallback = true }
+        }
     },
     { "folke/trouble.nvim", opts = {}, cmd = "Trouble" },
     { "karb94/neoscroll.nvim", config = true },
