@@ -23,6 +23,7 @@ x-scheme-handler/webcal=userapp-Thunderbird-6TGQL3.desktop
 text/calendar=userapp-Thunderbird-6TGQL3.desktop
 application/x-extension-ics=userapp-Thunderbird-6TGQL3.desktop
 x-scheme-handler/webcals=userapp-Thunderbird-6TGQL3.desktop
+x-scheme-handler/discord=vesktop.desktop
 
 [Added Associations]
 x-scheme-handler/http=firefox.desktop;

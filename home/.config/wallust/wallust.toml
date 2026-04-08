@@ -1,0 +1,26 @@
+# wallust configuration file
+
+# Backend: resized is faster and more reliable
+backend = "resized"
+
+# Color space: Lab provides better perceptual accuracy
+color_space = "lab"
+
+# Palette: dark16 is robust and provides 16 colors
+palette = "dark16"
+
+# Filter: We use a custom filter to ensure saturation and contrast
+filter = "contrast"
+
+# Saturation: Increase to make colors pop (similar to your pywal 0.6)
+# Note: wallust uses 1-100, so we'll try 60
+saturation = 60
+
+[templates]
+# We'll use the same paths as pywal to avoid breaking existing configs.
+hyprland = { template = "hyprland.conf", target = "~/.cache/wal/colors-hyprland.conf" }
+waybar = { template = "waybar.css", target = "~/.cache/wal/colors-waybar.css" }
+kitty = { template = "kitty.conf", target = "~/.cache/wal/colors-kitty.conf" }
+vesktop = { template = "vesktop.css", target = "~/.config/vesktop/themes/wallust.css" }
+colors_json = { template = "colors.json", target = "~/.cache/wal/colors.json" }
+rofi = { template = "rofi.rasi", target = "~/.cache/wal/colors-rofi-dark.rasi" }

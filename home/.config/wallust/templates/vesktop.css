@@ -1,0 +1,45 @@
+/**
+ * @name wallust
+ * @description A theme that matches your wallust colors.
+ * @author Gemini CLI
+ * @version 1.0.0
+ */
+
+:root {
+  --background-primary: {{background}};
+  --background-secondary: {{background}};
+  --background-secondary-alt: {{color0}};
+  --background-tertiary: {{background}};
+  --background-accent: {{color11}};
+  --background-floating: {{background}};
+  
+  --text-normal: {{foreground}};
+  --text-muted: {{color7}};
+  --text-link: {{color12}};
+  
+  --interactive-normal: {{color7}};
+  --interactive-hover: {{color11}};
+  --interactive-active: {{foreground}};
+  --interactive-muted: {{color8}};
+  
+  --header-primary: {{foreground}};
+  --header-secondary: {{color7}};
+  
+  --channeltextarea-background: {{color0}};
+  
+  --brand-experiment: {{color11}};
+  --brand-experiment-500: {{color11}};
+  
+  /* Hyprland Aesthetic: Matching borders */
+  --window-margin: 8px;
+  --window-border-radius: 10px;
+}
+
+/* Custom CSS to make it look cleaner on a G9 */
+.container_e44302 { /* Sidebar */
+  background-color: var(--background-secondary) !important;
+}
+
+.chat_a7d748 { /* Chat area */
+  background-color: var(--background-primary) !important;
+}

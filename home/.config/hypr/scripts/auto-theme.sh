@@ -114,6 +114,9 @@ while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
     fi
 
     if [ -n "$SELECTED_WALLPAPER" ]; then
+        # Save the absolute path for reloads/fallbacks
+        echo "$(realpath "$SELECTED_WALLPAPER")" > "$HOME/.cache/current_wallpaper_path.txt"
+
         # Apply Theme using theme-update.sh
         SCRIPT_DIR="$(dirname "$0")"
         UPDATE_SCRIPT="$SCRIPT_DIR/theme-update.sh"
@@ -142,7 +145,12 @@ done
 if [ "$SUCCESS" = false ]; then
     log_message "Critical Error: Failed to update theme after $MAX_ATTEMPTS attempts."
     log_message "Falling back to reloading last good theme..."
-    wal -R
+    # Restore the last theme using wallust
+    LAST_WALL_FILE="$HOME/.cache/current_wallpaper_path.txt"
+    if [ -f "$LAST_WALL_FILE" ]; then
+        LAST_WALL=$(cat "$LAST_WALL_FILE")
+        wallust run "$LAST_WALL"
+    fi
     exit 1
 fi
 

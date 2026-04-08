@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Match the G9 57" specifically
-MONITOR_NAME="DP-4"
+MONITOR_NAME="DP-2"
 
 # Get info for this specific monitor
 WIDTH=$(hyprctl monitors -j | jq -r ".[] | select(.name == \"$MONITOR_NAME\") | .width")
