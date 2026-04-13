@@ -92,18 +92,34 @@ style = "bold purple"
 format = "[$symbol$branch]($style) "
 
 [git_status]
-style = "bold red"
-format = '([\[ $all_status$ahead_behind\]]($style) )'
-conflicted = "=${count} "
-ahead = "⇡${count} "
-behind = "⇣${count} "
-diverged = "⇕⇡${ahead_count}⇣${behind_count} "
-untracked = "?${count} "
-stashed = "$${count} "
-modified = "!${count} "
-staged = "+${count} "
-renamed = "»${count} "
-deleted = "✘${count} "
+# Remove the global red style so each icon can use its own color
+format = '([\[ $all_status$ahead_behind\]](white) )'
+
+# Individual Statuses with Nerd Font Icons
+conflicted = '[󰯓${count} ](bright-red)'
+ahead      = '[󰶣${count} ](bright-blue)'
+behind     = '[󰶡${count} ](bright-magenta)'
+diverged   = '[󰶣${ahead_count}󰶡 ${behind_count} ](bright-cyan)'
+untracked  = '[${count} ](bright-yellow)'
+stashed    = '[󰈚${count} ](bright-blue)'
+modified   = '[󰏫${count} ](bright-yellow)'
+staged     = '[󰐗${count} ](bright-green)'
+renamed    = '[󰑕${count} ](bright-cyan)'
+deleted    = '[󰆴${count} ](red)'
+
+#[git_status]
+#style = "bold red"
+#format = '([\[ $all_status$ahead_behind\]]($style) )'
+#conflicted = "=${count} "
+#ahead = "⇡${count} "
+#behind = "⇣${count} "
+#diverged = "⇕⇡${ahead_count}⇣${behind_count} "
+#untracked = "?${count} "
+#stashed = "$${count} "
+#modified = "!${count} "
+#staged = "+${count} "
+#renamed = "»${count} "
+#deleted = "✘${count} "
 
 # --- Languages ---
 
