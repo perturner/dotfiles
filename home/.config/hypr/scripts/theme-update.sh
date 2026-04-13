@@ -2,62 +2,66 @@
 
 # Path to the file that stores the last used wallpaper
 LAST_WALL_FILE="$HOME/.cache/current_wallpaper_path.txt"
+DEFAULT_THEME="Kanagawa-Wave"
 
-# 1. Generate Colors & Update Wallpaper (if image provided or last exists)
+# 1. Handle Wallpaper (if image provided or last exists)
 if [ -n "$1" ]; then
-    # New wallpaper provided as argument
     WALLPAPER="$1"
-    # Ensure it's absolute for persistence
     ABS_WALLPAPER=$(realpath "$WALLPAPER")
     echo "$ABS_WALLPAPER" > "$LAST_WALL_FILE"
 else
-    # Reload mode - check for the last used wallpaper path
     if [ -f "$LAST_WALL_FILE" ]; then
         WALLPAPER=$(cat "$LAST_WALL_FILE")
     else
-        echo "Error: No wallpaper provided and no last_wallpaper found."
+        echo "Error: No wallpaper provided."
         exit 1
     fi
 fi
 
-# Generate colors with wallust
-# wallust run: generates colors and applies templates
-if ! wallust run "$WALLPAPER"; then
-    echo "Error: wallust failed to generate colors from $WALLPAPER"
-    exit 1
+# 2. Handle Theme Selection
+# Argument 2 is the theme. If not provided, use default.
+THEME_SELECTION="${2:-$DEFAULT_THEME}"
+
+if [ "$THEME_SELECTION" = "wallpaper" ]; then
+    # Dynamic: generate from image
+    echo "Applying dynamic theme from wallpaper..."
+    if ! wallust run "$WALLPAPER"; then
+        echo "Error: wallust failed to generate colors."
+        exit 1
+    fi
+else
+    # Static: apply specific wallust theme
+    echo "Applying consistent theme: $THEME_SELECTION..."
+    if ! wallust theme "$THEME_SELECTION"; then
+        echo "Error: wallust failed to apply theme $THEME_SELECTION. Falling back to $DEFAULT_THEME."
+        wallust theme "$DEFAULT_THEME"
+    fi
 fi
 
-# Update Hyprpaper using modern IPC
+# 3. Update Hyprpaper
 if pgrep hyprpaper >/dev/null; then
-     echo "Updating Hyprpaper..."
      MONITORS=$(hyprctl monitors -j | jq -r '.[].name')
-     
      for monitor in $MONITORS; do
          hyprctl hyprpaper wallpaper "$monitor,$WALLPAPER"
      done
-else
-     echo "Warning: hyprpaper not running. Wallpaper not updated."
 fi
 
-# 2. Update Pywalfox (Firefox)
+# 4. Update Pywalfox (Firefox)
 if command -v pywalfox &> /dev/null; then
+    sleep 0.2
     pywalfox update
 fi
 
-# 3. Force Kitty Color Reload
+# 5. Force Kitty Color Reload
 for socket in /tmp/kitty-*; do
     if [ -S "$socket" ]; then
         kitty @ --to "unix:$socket" set-colors --all --configured ~/.cache/wal/colors-kitty.conf
     fi
 done
 
-# 4. Reload Waybar
+# 6. Reload System UI
 pkill -SIGUSR2 waybar
-
-# 5. Reload SwayNC Style
 if pgrep -x swaync >/dev/null; then
     swaync-client -rs
 fi
-
-# 6. Reload Hyprland
 hyprctl reload

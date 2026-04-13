@@ -1,12 +1,25 @@
 #!/bin/fish
-# Native Fish TUI Launcher - High Density Version
+# Native Fish TUI Launcher - Smart Cache Version
 
 set -l CACHE_FILE "$HOME/.cache/fzf_launcher_cache"
 set -l HISTORY_FILE "$HOME/.cache/fzf_launcher_history"
 touch "$HISTORY_FILE"
 
-# 1. Build/Refresh Cache
-if not test -f "$CACHE_FILE"; or test (find "$CACHE_FILE" -mmin +60)
+# SMART CACHE: 
+# Check the last modification time of the system applications directory.
+# If /usr/share/applications is newer than our cache, we rebuild.
+set -l APPS_DIR "/usr/share/applications"
+set -l REBUILD false
+
+if not test -f "$CACHE_FILE"
+    set REBUILD true
+else if test (find "$APPS_DIR" -newer "$CACHE_FILE" 2>/dev/null)
+    set REBUILD true
+else if test (find "$CACHE_FILE" -mmin +60)
+    set REBUILD true
+end
+
+if test "$REBUILD" = "true"
     set -l TEMP_CACHE (mktemp)
     for dir in /usr/share/applications $HOME/.local/share/applications
         if test -d "$dir"
@@ -41,13 +54,10 @@ function get_ranked_list --inherit-variable HISTORY_FILE --inherit-variable CACH
     end < "$CACHE_FILE"
 end
 
-# 3. Launch FZF
-# - Reduced margins to 0
-# - Adjusted width to 50/50 split for the narrow window
 set -l TAB (printf "\t")
 set -l SELECTED (get_ranked_list | sort -k1,1rn -k2,2 | cut -f2- | fzf \
     --prompt="Launch > " \
-    --layout=reverse --border=rounded \
+    --layout=reverse --border=rounded --margin=5%,10% \
     --delimiter="$TAB" \
     --with-nth=1 \
     --no-sort \
