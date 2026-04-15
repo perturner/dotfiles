@@ -1,8 +1,2 @@
 [user]
 	email = per.turner@ericsson.com
-[url "git@ssh.dev.azure.com:v3/Collection-PTD/Embedded_PCSW/"]
-	insteadOf = git@ssh.dev.azure.com:v3/Embedded_PCSW/_git/
-[url "git@ssh.dev.azure.com:v3/Collection-PTD/KLInternal/"]
-	insteadOf = git@ssh.dev.azure.com:v3/KLInternal/_git/
-[url "git@ssh.dev.azure.com:v3/Collection-PTD/Raptor2Resource/"]
-	insteadOf = git@ssh.dev.azure.com:v3/Raptor2Resource/_git/
