@@ -45,3 +45,4 @@ fish_add_path -P ~/.npm-global/bin
 
 command -q pyenv; and pyenv init - | source
 command -q starship; and starship init fish | source
+zoxide init fish | source
