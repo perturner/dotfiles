@@ -23,6 +23,10 @@ autocmd({ "BufLeave", "FocusLost", "InsertLeave" }, {
         if vim.bo.modified and vim.bo.buftype == "" then
             vim.cmd("silent! update")
         end
+        -- Keep session file fresh if Obsession is tracking
+        if vim.g.this_obsession then
+            vim.cmd("silent! Obsession " .. vim.g.this_obsession)
+        end
     end,
 })
 
@@ -32,9 +36,10 @@ autocmd("VimEnter", {
         if vim.fn.argc() == 0 then
             if vim.fn.filereadable("Session.vim") == 1 then
                 vim.cmd("source Session.vim")
-                vim.schedule(function()
-                    vim.cmd("bufdo if &buftype == '' | doautocmd FileType | endif")
-                end)
+                -- Re-trigger filetype detection after session restore + plugin load
+                vim.defer_fn(function()
+                    vim.cmd("doautoall BufRead")
+                end, 100)
             else
                 vim.cmd("Obsession")
             end

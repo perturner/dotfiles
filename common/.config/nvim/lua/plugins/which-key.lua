@@ -2,8 +2,15 @@ return {
   "folke/which-key.nvim",
   event = "VeryLazy",
   opts = {
-    -- This helps you see the "shape" of your leader commands
-    preset = "modern", 
+    preset = "modern",
+    spec = {
+      { "<leader>c", group = "CMake" },
+      { "<leader>d", group = "Debug" },
+      { "<leader>f", group = "Find" },
+      { "<leader>g", group = "Git" },
+      { "<leader>r", group = "Refactor" },
+      { "<leader>x", group = "Diagnostics" },
+    },
   },
   keys = {
     {

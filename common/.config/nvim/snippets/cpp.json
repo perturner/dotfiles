@@ -1,0 +1,116 @@
+{
+  "Pragma Once Header": {
+    "prefix": "header",
+    "body": [
+      "#pragma once",
+      "",
+      "$0"
+    ],
+    "description": "Header file with #pragma once"
+  },
+  "Doxygen File Header": {
+    "prefix": "dfile",
+    "body": [
+      "//! @file ${TM_FILENAME}",
+      "//! @brief ${1:Brief description}",
+      "//! @author ${2:Author}",
+      "//! @date ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+      "",
+      "$0"
+    ],
+    "description": "Doxygen //! file header"
+  },
+  "Doxygen Function": {
+    "prefix": "dfun",
+    "body": [
+      "//! @brief ${1:Brief description}",
+      "//! @param ${2:param} ${3:Description}",
+      "//! @return ${4:Description}",
+      "$0"
+    ],
+    "description": "Doxygen //! function documentation"
+  },
+  "Doxygen Brief": {
+    "prefix": "dbrief",
+    "body": [
+      "//! @brief ${1:Brief description}",
+      "$0"
+    ],
+    "description": "Doxygen //! brief"
+  },
+  "Doxygen Param": {
+    "prefix": "dparam",
+    "body": [
+      "//! @param ${1:name} ${2:Description}",
+      "$0"
+    ],
+    "description": "Doxygen //! param"
+  },
+  "Doxygen Class": {
+    "prefix": "dclass",
+    "body": [
+      "//! @class ${1:ClassName}",
+      "//! @brief ${2:Brief description}",
+      "$0"
+    ],
+    "description": "Doxygen //! class documentation"
+  },
+  "Class Declaration": {
+    "prefix": "classd",
+    "body": [
+      "//! @class ${1:ClassName}",
+      "//! @brief ${2:Brief description}",
+      "class ${1:ClassName} {",
+      "public:",
+      "    ${1:ClassName}() = default;",
+      "    ~${1:ClassName}() = default;",
+      "",
+      "    ${1:ClassName}(const ${1:ClassName}&) = delete;",
+      "    ${1:ClassName}& operator=(const ${1:ClassName}&) = delete;",
+      "",
+      "    $0",
+      "",
+      "private:",
+      "};"
+    ],
+    "description": "Class with rule of five defaults and doxygen"
+  },
+  "Singleton": {
+    "prefix": "singleton",
+    "body": [
+      "class ${1:ClassName} {",
+      "public:",
+      "    static ${1:ClassName}& instance() {",
+      "        static ${1:ClassName} inst;",
+      "        return inst;",
+      "    }",
+      "",
+      "    ${1:ClassName}(const ${1:ClassName}&) = delete;",
+      "    ${1:ClassName}& operator=(const ${1:ClassName}&) = delete;",
+      "",
+      "    $0",
+      "",
+      "private:",
+      "    ${1:ClassName}() = default;",
+      "};"
+    ],
+    "description": "Singleton pattern"
+  },
+  "Enum Class": {
+    "prefix": "enumc",
+    "body": [
+      "//! @brief ${2:Description}",
+      "enum class ${1:Name} {",
+      "    $0",
+      "};"
+    ],
+    "description": "Scoped enum class with doxygen"
+  },
+  "Include Guard Pragma": {
+    "prefix": "once",
+    "body": [
+      "#pragma once"
+    ],
+    "description": "#pragma once"
+  }
+}

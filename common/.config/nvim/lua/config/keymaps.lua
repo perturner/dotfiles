@@ -15,11 +15,16 @@ map('n', '<leader>ev', ":edit $MYVIMRC<CR>", { desc = "Edit Config" })
 -- C++ Switch Header/Source
 map('n', '<M-o>', '<cmd>ClangdSwitchSourceHeader<cr>', { desc = "Switch Source/Header" })
 
--- CMake Selection & Generation
+-- CMake (<leader>c)
 map('n', '<leader>cp', '<cmd>CMakeSelectConfigurePreset<cr>', { desc = "Select Configure Preset" })
 map('n', '<leader>cg', '<cmd>CMakeGenerate<cr>', { desc = "CMake Generate (re-configure)" })
-map('n', '<leader>b', '<cmd>CMakeBuild<cr>', { desc = "CMake Build" })
-map('n', '<leader>t', '<cmd>CMakeRunTest<cr>', { desc = "CMake Test" })
+map('n', '<leader>cb', '<cmd>CMakeBuild<cr>', { desc = "CMake Build" })
+map('n', '<leader>ct', '<cmd>CMakeRunTest<cr>', { desc = "CMake Test" })
 map('n', '<leader>cc', '<cmd>CMakeClean<cr>', { desc = "CMake Clean" })
 map('n', '<leader>cs', '<cmd>CMakeStop<cr>', { desc = "Stop Active Build" })
 map('n', '<leader>ci', '<cmd>CMakeStepOut<cr>', { desc = "Toggle CMake Console" })
+
+-- Git (<leader>g)
+map('n', '<leader>gb', '<cmd>Telescope git_branches<cr>', { desc = "Git Branches" })
+map('n', '<leader>gs', '<cmd>Telescope git_status<cr>', { desc = "Git Status" })
+map('n', '<leader>gl', '<cmd>Telescope git_commits<cr>', { desc = "Git Commits" })
