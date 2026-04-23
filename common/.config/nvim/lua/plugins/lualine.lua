@@ -4,8 +4,39 @@ return {
         require('lualine').setup({
             options = { theme = 'auto', globalstatus = true },
             sections = {
-                lualine_c = { { 'filename', path = 1 } },
+                lualine_b = {
+                    'branch',
+                    {
+                        'diff',
+                        source = function()
+                            local gs = vim.b.gitsigns_status_dict
+                            if gs then
+                                return { added = gs.added, modified = gs.changed, removed = gs.removed }
+                            end
+                        end,
+                    },
+                },
+                lualine_c = {
+                    {
+                        function()
+                            local cwd = vim.fn.getcwd()
+                            local wt = cwd:match(".*/([^/]+)$")
+                            return " " .. (wt or "")
+                        end,
+                        color = { fg = "#e0af68" }
+                    },
+                    { 'filename', path = 1 },
+                },
                 lualine_x = {
+                    {
+                        function()
+                            local status = require("dap").status()
+                            return status ~= "" and (" " .. status) or ""
+                        end,
+                        cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,
+                        color = { fg = "#f7768e" }
+                    },
+                    { 'diagnostics', sources = { 'nvim_diagnostic' } },
                     {
                         function()
                             local cmake = require("cmake-tools")
@@ -19,7 +50,14 @@ return {
                         end,
                         color = { fg = "#4EC9B0" }
                     },
-                    'encoding', 'filetype'
+                    {
+                        function()
+                            local clients = vim.lsp.get_clients({ bufnr = 0 })
+                            if #clients == 0 then return "" end
+                            return "󰒍 " .. clients[1].name
+                        end,
+                    },
+                    'filetype'
                 }
             }
         })
