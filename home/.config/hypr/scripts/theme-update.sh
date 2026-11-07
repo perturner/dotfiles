@@ -12,6 +12,7 @@ if [ -n "$1" ]; then
 else
     if [ -f "$LAST_WALL_FILE" ]; then
         WALLPAPER=$(cat "$LAST_WALL_FILE")
+        ABS_WALLPAPER=$(realpath "$WALLPAPER")
     else
         echo "Error: No wallpaper provided."
         exit 1
@@ -38,30 +39,56 @@ else
     fi
 fi
 
-# 3. Update Hyprpaper
-if pgrep hyprpaper >/dev/null; then
-     MONITORS=$(hyprctl monitors -j | jq -r '.[].name')
-     for monitor in $MONITORS; do
-         hyprctl hyprpaper wallpaper "$monitor,$WALLPAPER"
-     done
-fi
-
-# 4. Update Pywalfox (Firefox)
+# 3. Update Pywalfox (Firefox)
 if command -v pywalfox &> /dev/null; then
     sleep 0.2
     pywalfox update
 fi
 
-# 5. Force Kitty Color Reload
+# 4. Force Kitty Color Reload
 for socket in /tmp/kitty-*; do
     if [ -S "$socket" ]; then
         kitty @ --to "unix:$socket" set-colors --all --configured ~/.cache/wal/colors-kitty.conf
     fi
 done
 
-# 6. Reload System UI
+# 5. Reload System UI
 pkill -SIGUSR2 waybar
 if pgrep -x swaync >/dev/null; then
     swaync-client -rs
 fi
 hyprctl reload
+
+# 6. Update Hyprpaper (wait for monitor & hyprpaper readiness at boot)
+ln -sf "$ABS_WALLPAPER" "$HOME/.cache/current_wallpaper"
+
+for _ in {1..10}; do
+    MONITORS=$(hyprctl monitors -j 2>/dev/null | jq -r '.[].name')
+    if [ -n "$MONITORS" ]; then
+        break
+    fi
+    sleep 0.5
+done
+
+if ! pgrep -x hyprpaper >/dev/null || journalctl --user -u hyprpaper -b -n 5 2>/dev/null | grep -q "Found 0 output(s)"; then
+    systemctl --user restart hyprpaper.service 2>/dev/null || hyprpaper &
+    sleep 0.5
+fi
+
+for _ in {1..10}; do
+    MONITORS=$(hyprctl monitors -j 2>/dev/null | jq -r '.[].name')
+    if [ -n "$MONITORS" ]; then
+        APPLIED=true
+        for monitor in $MONITORS; do
+            if ! hyprctl hyprpaper wallpaper "$monitor,$ABS_WALLPAPER" >/dev/null 2>&1; then
+                APPLIED=false
+            fi
+        done
+        if [ "$APPLIED" = true ]; then
+            break
+        fi
+    fi
+    sleep 0.5
+done
+
+

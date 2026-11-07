@@ -36,8 +36,32 @@ if wal then
     wal:close()
 end
 
+local function with_alpha(color, alpha)
+    local hex = color:match("rgb%((%x+)%)")
+    if hex then
+        return "rgba(" .. hex .. alpha .. ")"
+    end
+    return color
+end
+
+local function blend_colors(c1, c2, ratio, alpha)
+    local h1 = c1:match("rgb%((%x+)%)")
+    local h2 = c2:match("rgb%((%x+)%)")
+    if not h1 or not h2 then
+        return with_alpha(c1, alpha or "ff")
+    end
+    local r1, g1, b1 = tonumber(h1:sub(1, 2), 16), tonumber(h1:sub(3, 4), 16), tonumber(h1:sub(5, 6), 16)
+    local r2, g2, b2 = tonumber(h2:sub(1, 2), 16), tonumber(h2:sub(3, 4), 16), tonumber(h2:sub(5, 6), 16)
+    local r = math.floor(r1 * (1 - ratio) + r2 * ratio + 0.5)
+    local g = math.floor(g1 * (1 - ratio) + g2 * ratio + 0.5)
+    local b = math.floor(b1 * (1 - ratio) + b2 * ratio + 0.5)
+    return string.format("rgba(%02x%02x%02x%s)", r, g, b, alpha or "ff")
+end
+
 hl.monitor({
     output = "desc:Samsung Electric Company Odyssey G95NC HNTX800635",
+    -- The G9 advertises 4K as its EDID-preferred mode even when its native
+    -- Dual UHD mode is available, so keep native single-source operation explicit.
     mode = "7680x2160@240",
     position = "0x0",
     scale = "1",
@@ -118,15 +142,26 @@ hl.config({
             border_inactive = colors.color1,
         },
         groupbar = {
+            font_family = "FiraCode Nerd Font Mono",
+            font_size = 13,
+            font_weight_active = "bold",
+            font_weight_inactive = "normal",
             render_titles = true,
             stacked = false,
             height = 24,
-            font_size = 13,
+            indicator_height = 0,
+            gradients = true,
+            gradient_rounding = 12,
+            gradient_round_only_edges = false,
+            gaps_in = 6,
+            gaps_out = 4,
+            text_padding = 10,
             col = {
-                active = colors.color11,
-                inactive = colors.color1,
+                active = blend_colors(colors.background, colors.color4, 0.25, "e6"),
+                inactive = with_alpha(colors.background, "cc"),
             },
             text_color = colors.foreground,
+            text_color_inactive = colors.color8,
         },
     },
     misc = {
@@ -139,7 +174,7 @@ hl.config({
 })
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("uwsm app -- xrandr --output DP-2 --primary")
+    hl.exec_cmd("uwsm app -- sh -c 'out=$(xrandr --listmonitors 2>/dev/null | awk \"NR==2 {print \\$4}\"); [ -n \"$out\" ] && xrandr --output \"$out\" --primary'")
     hl.exec_cmd("uwsm app -- /usr/lib/hyprpolkitagent/hyprpolkitagent")
     hl.exec_cmd("uwsm app -- swaync")
     hl.exec_cmd("uwsm app -- wl-paste --type text --watch cliphist store")
@@ -220,16 +255,16 @@ hl.bind(main_mod .. " + CTRL + L", hl.dsp.window.resize({ x = 40, y = 0, relativ
 hl.bind(main_mod .. " + CTRL + K", hl.dsp.window.resize({ x = 0, y = -40, relative = true }), { repeating = true })
 hl.bind(main_mod .. " + CTRL + J", hl.dsp.window.resize({ x = 0, y = 40, relative = true }), { repeating = true })
 
-hl.bind("CTRL + ALT + 1", exec("/home/per/.config/hypr/scripts/g9-snap.sh 15"))
-hl.bind("CTRL + ALT + 2", exec("/home/per/.config/hypr/scripts/g9-snap.sh 35"))
-hl.bind("CTRL + ALT + 3", exec("/home/per/.config/hypr/scripts/g9-snap.sh 50"))
-hl.bind("CTRL + ALT + 4", exec("/home/per/.config/hypr/scripts/g9-snap.sh 65"))
-hl.bind("CTRL + ALT + 5", exec("/home/per/.config/hypr/scripts/g9-snap.sh 85"))
-hl.bind("CTRL + ALT + H", exec("/home/per/.config/hypr/scripts/g9-snap.sh 15"))
-hl.bind("CTRL + ALT + L", exec("/home/per/.config/hypr/scripts/g9-snap.sh 35"))
-hl.bind("CTRL + ALT + SPACE", exec("/home/per/.config/hypr/scripts/g9-layout.sh proportional"))
-hl.bind("CTRL + ALT + SHIFT + SPACE", exec("/home/per/.config/hypr/scripts/g9-layout.sh equal"))
-hl.bind("CTRL + ALT + G", exec("/home/per/.config/hypr/scripts/game-stream-layout.sh"))
+hl.bind("CTRL + ALT + 1", exec("~/.config/hypr/scripts/g9-snap.sh 15"))
+hl.bind("CTRL + ALT + 2", exec("~/.config/hypr/scripts/g9-snap.sh 35"))
+hl.bind("CTRL + ALT + 3", exec("~/.config/hypr/scripts/g9-snap.sh 50"))
+hl.bind("CTRL + ALT + 4", exec("~/.config/hypr/scripts/g9-snap.sh 65"))
+hl.bind("CTRL + ALT + 5", exec("~/.config/hypr/scripts/g9-snap.sh 85"))
+hl.bind("CTRL + ALT + H", exec("~/.config/hypr/scripts/g9-snap.sh 15"))
+hl.bind("CTRL + ALT + L", exec("~/.config/hypr/scripts/g9-snap.sh 35"))
+hl.bind("CTRL + ALT + SPACE", exec("~/.config/hypr/scripts/g9-layout.sh proportional"))
+hl.bind("CTRL + ALT + SHIFT + SPACE", exec("~/.config/hypr/scripts/g9-layout.sh equal"))
+hl.bind("CTRL + ALT + G", exec("~/.config/hypr/scripts/game-stream-layout.sh"))
 
 hl.bind("SHIFT + PRINT", exec("uwsm app -- hyprshot -m window"))
 hl.bind("PRINT", exec("uwsm app -- hyprshot -m output"))

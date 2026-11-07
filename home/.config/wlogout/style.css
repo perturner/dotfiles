@@ -1,4 +1,4 @@
-@import "/home/per/.cache/wal/colors-waybar.css";
+@import "../../.cache/wal/colors-waybar.css";
 
 * {
     background-image: none;
@@ -50,4 +50,8 @@ button:active {
 
 #reboot {
     background-image: image(url("/usr/share/wlogout/icons/reboot.png"));
+}
+
+#windows {
+    background-image: image(url("windows.png"));
 }

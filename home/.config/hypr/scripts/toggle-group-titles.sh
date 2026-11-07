@@ -1,17 +1,13 @@
 #!/bin/bash
 
-# Toggle Hyprland group titles visibility by zeroing font size
-# This keeps the group bar height consistent (defined in hyprland.lua)
+# Toggle Hyprland group titles visibility while keeping a clickable pill bar when hidden
 
-# Get current font size
-CURRENT_FONT=$(hyprctl getoption group.groupbar.font_size -j | jq -r '.int')
+RENDER_TITLES=$(hyprctl getoption group.groupbar.render_titles -j | jq -r '.bool')
 
-if [ "$CURRENT_FONT" -gt 0 ]; then
-    # Hide titles by setting font to 0, but keep the bar height
-    hyprctl eval 'hl.config({ group = { groupbar = { font_size = 0 } } })'
-    # Optional: you could also set render_titles to false here if 0 font isn't enough,
-    # but usually font 0 + fixed height 24 works best.
+if [ "$RENDER_TITLES" = "true" ]; then
+    hyprctl eval 'hl.config({ group = { groupbar = { render_titles = false, indicator_height = 12 } } })'
 else
-    # Restore titles
-    hyprctl eval 'hl.config({ group = { groupbar = { font_size = 13 } } })'
+    hyprctl eval 'hl.config({ group = { groupbar = { render_titles = true, indicator_height = 0 } } })'
 fi
+
+

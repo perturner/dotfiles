@@ -14,25 +14,26 @@ if [ ! -d "$SAVE_DIR" ]; then
     mkdir -p "$SAVE_DIR" || { log_message "Error: Failed to create directory $SAVE_DIR"; exit 1; }
 fi
 
-# Find the current wallpaper file in .cache based on current_wallpaper.EXT pattern
-# Assumes the latest 'current_wallpaper.*' is the one currently active.
-LATEST_WALLPAPER=$(find "$HOME/.cache" -maxdepth 1 -type f -name "current_wallpaper.*" -printf "%T@ %p\n" | sort -n | tail -1 | cut -d' ' -f2-)
+# Find the current wallpaper from current_wallpaper_path.txt or ~/.cache/current_wallpaper
+if [ -f "$HOME/.cache/current_wallpaper_path.txt" ]; then
+    LATEST_WALLPAPER=$(cat "$HOME/.cache/current_wallpaper_path.txt")
+elif [ -L "$HOME/.cache/current_wallpaper" ]; then
+    LATEST_WALLPAPER=$(realpath "$HOME/.cache/current_wallpaper")
+else
+    LATEST_WALLPAPER=$(find "$HOME/.cache" -maxdepth 1 -type f -name "current_wallpaper.*" -printf "%T@ %p\n" | sort -n | tail -1 | cut -d' ' -f2-)
+fi
 
 if [ -z "$LATEST_WALLPAPER" ] || [ ! -f "$LATEST_WALLPAPER" ]; then
-    log_message "Error: No current wallpaper found at $HOME/.cache/current_wallpaper.*"
+    log_message "Error: No current wallpaper found."
     exit 1
 fi
 
 EXT="${LATEST_WALLPAPER##*.}"
 CURRENT_WALLPAPER_PATH="$LATEST_WALLPAPER"
 
-# Read the original filename, if available
-ORIGINAL_FILENAME_HINT=""
-if [ -f "$HOME/.cache/current_wallpaper_name.txt" ]; then
-    ORIGINAL_FILENAME_HINT=$(cat "$HOME/.cache/current_wallpaper_name.txt")
-    # Remove extension for hint
-    ORIGINAL_FILENAME_HINT="${ORIGINAL_FILENAME_HINT%.*}"
-fi
+# Use the cached filename (without extension) as the default hint
+ORIGINAL_FILENAME_HINT=$(basename "$CURRENT_WALLPAPER_PATH")
+ORIGINAL_FILENAME_HINT="${ORIGINAL_FILENAME_HINT%.*}"
 
 # Prompt user for a filename
 read -p "Enter a name for the wallpaper (default: $ORIGINAL_FILENAME_HINT, will save as .${EXT}): " FILENAME_BASE
@@ -41,7 +42,7 @@ read -p "Enter a name for the wallpaper (default: $ORIGINAL_FILENAME_HINT, will 
 if [ -z "$FILENAME_BASE" ]; then
     if [ -n "$ORIGINAL_FILENAME_HINT" ]; then
         FILENAME_BASE="$ORIGINAL_FILENAME_HINT"
-        log_message "No name provided, using original filename hint: $FILENAME_BASE"
+        log_message "No name provided, using filename hint: $FILENAME_BASE"
     else
         FILENAME_BASE="wallpaper_$(date +%Y%m%d%H%M%S)"
         log_message "No name provided and no hint, using default: $FILENAME_BASE"
@@ -60,7 +61,7 @@ if [ -f "$SAVE_PATH" ]; then
 fi
 
 # Copy the file
-log_message "Saving wallpaper from '$CURRENT_WALLPAPER_PATH' to '$SAVE_PATH'வுகளை..."
+log_message "Saving wallpaper from '$CURRENT_WALLPAPER_PATH' to '$SAVE_PATH'..."
 if cp "$CURRENT_WALLPAPER_PATH" "$SAVE_PATH"; then
     log_message "Successfully saved wallpaper to: $SAVE_PATH"
 else

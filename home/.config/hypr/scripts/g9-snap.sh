@@ -31,11 +31,10 @@ if [ $(echo "$WINDOW_CENTER < $HALFWAY" | $BC) -eq 1 ]; then
     $HYPRCTL dispatch "hl.dsp.window.resize({ x = $DIFF, y = 0, relative = true })"
 else
     # Right side: To move the left handle, we must move the split of the PREVIOUS window.
-    # We use 'm' (move focus) to the left, resize, then move back.
-    $HYPRCTL dispatch movefocus l
+    $HYPRCTL dispatch "hl.dsp.focus({ direction = 'left' })"
     # Note: Growing the left neighbor by DIFF (if positive) shrinks us by DIFF.
     # So we need to grow the left neighbor by NEGATIVE DIFF.
     INVERSE_DIFF=$(echo "-1 * $DIFF" | $BC)
     $HYPRCTL dispatch "hl.dsp.window.resize({ x = $INVERSE_DIFF, y = 0, relative = true })"
-    $HYPRCTL dispatch movefocus r
+    $HYPRCTL dispatch "hl.dsp.focus({ direction = 'right' })"
 fi

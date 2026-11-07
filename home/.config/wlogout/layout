@@ -11,6 +11,12 @@
     "keybind" : "r"
 }
 {
+    "label" : "windows",
+    "action" : "~/.config/wlogout/reboot-windows.sh",
+    "text" : "Windows",
+    "keybind" : "w"
+}
+{
     "label" : "lock",
     "action" : "loginctl lock-session",
     "text" : "Lock",
