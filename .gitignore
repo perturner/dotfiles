@@ -2,3 +2,6 @@
 Session.vim
 home/.config/monitors.json
 home/.config/wireguard/*.conf
+
+# Machine-local GTK bookmarks (contains per-machine mount/user paths)
+home/.config/gtk-3.0/bookmarks

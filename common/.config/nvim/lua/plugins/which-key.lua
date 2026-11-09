@@ -8,6 +8,7 @@ return {
       { "<leader>d", group = "Debug" },
       { "<leader>f", group = "Find" },
       { "<leader>g", group = "Git" },
+      { "<leader>gh", group = "Git Hunk", icon = "" },
       { "<leader>r", group = "Refactor" },
       { "<leader>x", group = "Diagnostics" },
     },

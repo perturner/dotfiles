@@ -2,18 +2,18 @@
 
 local map = vim.keymap.set
 
--- Split Navigation (Alt+Shift + hjkl)
-map('n', '<M-H>', '<C-w>h', { desc = "Go to Left Window" })
-map('n', '<M-J>', '<C-w>j', { desc = "Go to Lower Window" })
-map('n', '<M-K>', '<C-w>k', { desc = "Go to Upper Window" })
-map('n', '<M-L>', '<C-w>l', { desc = "Go to Right Window" })
+-- Split Navigation (Ctrl + hjkl — standard, and avoids the Alt+Shift
+-- ambiguity with the Alt+j/k move-line maps below)
+map('n', '<C-h>', '<C-w>h', { desc = "Go to Left Window" })
+map('n', '<C-j>', '<C-w>j', { desc = "Go to Lower Window" })
+map('n', '<C-k>', '<C-w>k', { desc = "Go to Upper Window" })
+map('n', '<C-l>', '<C-w>l', { desc = "Go to Right Window" })
 
 -- Escape Hatch
 map('i', 'jk', '<ESC>', { desc = "Escape" })
 map('n', '<leader>ev', ":edit $MYVIMRC<CR>", { desc = "Edit Config" })
 
--- C++ Switch Header/Source
-map('n', '<M-o>', '<cmd>ClangdSwitchSourceHeader<cr>', { desc = "Switch Source/Header" })
+-- C++ Switch Header/Source: bound to <A-o> in init.lua (switch_source_header)
 
 -- CMake (<leader>c)
 map('n', '<leader>cp', '<cmd>CMakeSelectConfigurePreset<cr>', { desc = "Select Configure Preset" })

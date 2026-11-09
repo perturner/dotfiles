@@ -4,7 +4,7 @@ return {
   keys = {
     { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Diffview Open" },
     { "<leader>gc", "<cmd>DiffviewClose<cr>", desc = "Diffview Close" },
-    { "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "Diffview File History" },
+    { "<leader>gf", "<cmd>DiffviewFileHistory %<cr>", desc = "Diffview File History" },
   },
   opts = {
     enhanced_diff_hl = true, -- Better for your shape-based scanning

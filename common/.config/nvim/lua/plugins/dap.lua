@@ -35,12 +35,21 @@ return {
             args = { "--interpreter=dap", "--quiet" },
         }
 
-        -- GDB adapter for CM4 remote (Yocto toolchain)
-        dap.adapters.gdb_remote = {
-            type = "executable",
-            command = "/opt/iudc_toolchain/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-gdb",
-            args = { "--interpreter=dap", "--quiet", "-x", "/tmp/iudc_gdbinit" },
-        }
+        -- GDB adapter for remote cross-target debugging (Yocto/OE toolchain).
+        -- Toolchain bin dir is project-specific: read from $CROSS_TOOLCHAIN_BIN
+        -- (kept in sync with the clangd --query-driver path in lsp.lua). The
+        -- adapter is only registered when a cross toolchain is configured.
+        local toolchain_bin = vim.env.CROSS_TOOLCHAIN_BIN
+        if toolchain_bin then
+            dap.adapters.gdb_remote = {
+                type = "executable",
+                command = toolchain_bin .. "/aarch64-poky-linux-gdb",
+                args = {
+                    "--interpreter=dap", "--quiet",
+                    "-x", vim.env.CROSS_GDBINIT or "/tmp/cross_gdbinit",
+                },
+            }
+        end
 
         dap.configurations.cpp = {
             {
@@ -53,14 +62,14 @@ return {
                 cwd = "${workspaceFolder}",
             },
             {
-                name = "CM4 Remote - Attach (gdbserver)",
+                name = "Remote Target - Attach (gdbserver)",
                 type = "gdb_remote",
                 request = "attach",
                 target = function()
                     return vim.fn.input("Target (host:port): ", "192.168.1.100:2345")
                 end,
                 program = function()
-                    return vim.fn.input("Local binary: ", vim.fn.getcwd() .. "/build/cm4-debug/", "file")
+                    return vim.fn.input("Local binary: ", vim.fn.getcwd() .. "/build/remote-debug/", "file")
                 end,
                 cwd = "${workspaceFolder}",
             },

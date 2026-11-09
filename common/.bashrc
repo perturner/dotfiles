@@ -1,5 +1,5 @@
-# Kiro CLI pre block. Keep at the top of this file.
-[[ -f "${HOME}/.local/share/kiro-cli/shell/bashrc.pre.bash" ]] && builtin source "${HOME}/.local/share/kiro-cli/shell/bashrc.pre.bash"
+# Added by Kiro CLI
+case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="${PATH:+$PATH:}$HOME/.local/bin" ;; esac
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -123,8 +123,6 @@ export PATH="$HOME/.local/bin:$PATH"
 alias g="git"
 alias fish="exec fish -l"
 
-# Kiro CLI post block. Keep at the bottom of this file.
-[[ -f "${HOME}/.local/share/kiro-cli/shell/bashrc.post.bash" ]] && builtin source "${HOME}/.local/share/kiro-cli/shell/bashrc.post.bash"
 
 export VCPKG_DEFAULT_BINARY_CACHE=~/.vcpkg-cache
 
