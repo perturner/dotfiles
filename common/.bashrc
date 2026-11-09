@@ -132,5 +132,7 @@ command -v starship &>/dev/null && eval "$(starship init bash)"
 
 command -v zoxide &>/dev/null && eval "$(zoxide init bash)"
 
+command -v direnv &>/dev/null && eval "$(direnv hook bash)"
+
 # Added by Antigravity CLI installer
 export PATH="/home/per/.local/bin:$PATH"

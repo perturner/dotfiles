@@ -46,6 +46,7 @@ fish_add_path /home/per/.local/bin
 
 command -q pyenv; and pyenv init - | source
 command -q starship; and starship init fish | source
+command -q direnv; and direnv hook fish | source
 zoxide init fish | source
 
 
