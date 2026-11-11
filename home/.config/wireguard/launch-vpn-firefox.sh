@@ -90,8 +90,14 @@ done
 ip netns exec "$NS_NAME" ip link set lo up
 ip netns exec "$NS_NAME" ip route add default dev "$WG_IF"
 
+mkdir -p "/etc/netns/$NS_NAME"
+
+# Do not let processes in this namespace use the host's systemd-resolved
+# socket.  It can bypass this namespace's resolv.conf (and its DNS policy).
+sed -E '/^hosts:/ s/[[:space:]]+resolve([[:space:]]+\[[^]]+\])?//' \
+    /etc/nsswitch.conf > "/etc/netns/$NS_NAME/nsswitch.conf"
+
 if [ -n "$DNS_SERVERS" ]; then
-    mkdir -p "/etc/netns/$NS_NAME"
     > "/etc/netns/$NS_NAME/resolv.conf"
     for dns in $DNS_SERVERS; do
         echo "nameserver $dns" >> "/etc/netns/$NS_NAME/resolv.conf"

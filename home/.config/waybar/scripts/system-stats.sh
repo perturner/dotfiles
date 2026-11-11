@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# Load theme colors for inline Pango spans (fallback to Kanagawa defaults)
+COLOR_COOL="#7E9CD8"
+COLOR_NORMAL="#98BB6C"
+COLOR_WARM="#E6C384"
+COLOR_HOT="#E82424"
+
+if [ -f "$HOME/.cache/wal/colors.json" ]; then
+    read -r COLOR_COOL COLOR_NORMAL COLOR_WARM COLOR_HOT < <(
+        jq -r '[.colors.color4, .colors.color10, .colors.color11, .colors.color9] | join(" ")' "$HOME/.cache/wal/colors.json" 2>/dev/null
+    )
+fi
+
 get_cpu_temp() {
     # Find coretemp hwmon path
     HWMON_PATH=$(grep -l "coretemp" /sys/class/hwmon/hwmon*/name | head -n 1 | xargs -r dirname)
@@ -20,16 +32,22 @@ get_cpu_temp() {
             TEMP_MILLI=$(cat "$INPUT_FILE")
             TEMP_C=$((TEMP_MILLI / 1000))
             
-            # Determine icon based on temp
+            # Determine icon and class based on temp
             if [ "$TEMP_C" -ge 80 ]; then
-                ICON="" # Critical
+                ICON=""
+                STATE_CLASS="temp-hot"
             elif [ "$TEMP_C" -ge 60 ]; then
-                ICON="" # High
+                ICON=""
+                STATE_CLASS="temp-warm"
+            elif [ "$TEMP_C" -ge 45 ]; then
+                ICON=""
+                STATE_CLASS="temp-normal"
             else
-                ICON="" # Normal
+                ICON=""
+                STATE_CLASS="temp-cool"
             fi
 
-            echo "{\"text\": \"$ICON $TEMP_C°C\", \"tooltip\": \"CPU Package Temp\nSensor: $INPUT_FILE\", \"class\": \"custom-cpu-temp\", \"percentage\": $TEMP_C}"
+            echo "{\"text\": \"$ICON $TEMP_C°C\", \"tooltip\": \"CPU Package Temp\nSensor: $INPUT_FILE\", \"class\": [\"custom-cpu-temp\", \"$STATE_CLASS\"], \"percentage\": $TEMP_C}"
         else
             echo "{\"text\": \" Err\", \"tooltip\": \"Input file not found: $INPUT_FILE\"}"
         fi
@@ -74,16 +92,22 @@ get_ram_temp() {
         return
     fi
 
-    # Determine icon based on temp
-    if [ "$MAX_TEMP" -ge 60 ]; then
-        ICON="" # Critical/High for RAM
-    elif [ "$MAX_TEMP" -ge 50 ]; then
-        ICON="" # Warm
+    # Determine icon and class based on temp (DDR5 thresholds)
+    if [ "$MAX_TEMP" -ge 55 ]; then
+        ICON=""
+        STATE_CLASS="temp-hot"
+    elif [ "$MAX_TEMP" -ge 45 ]; then
+        ICON=""
+        STATE_CLASS="temp-warm"
+    elif [ "$MAX_TEMP" -ge 38 ]; then
+        ICON=""
+        STATE_CLASS="temp-normal"
     else
-        ICON="" # Normal
+        ICON=""
+        STATE_CLASS="temp-cool"
     fi
 
-    echo "{\"text\": \"$ICON $MAX_TEMP°C\", \"tooltip\": \"$TOOLTIP\", \"class\": \"custom-ram-temp\", \"percentage\": $MAX_TEMP}"
+    echo "{\"text\": \"$ICON $MAX_TEMP°C\", \"tooltip\": \"$TOOLTIP\", \"class\": [\"custom-ram-temp\", \"$STATE_CLASS\"], \"percentage\": $MAX_TEMP}"
 }
 
 get_load() {
@@ -174,7 +198,18 @@ get_water_temp() {
         return
     fi
 
-    echo "{\"text\": \" ${MAX_TEMP}°C\", \"tooltip\": \"$TOOLTIP\", \"class\": \"custom-water-temp\", \"percentage\": $MAX_TEMP}"
+    # Coolant temperature thresholds
+    if [ "$MAX_TEMP" -ge 40 ]; then
+        STATE_CLASS="temp-hot"
+    elif [ "$MAX_TEMP" -ge 35 ]; then
+        STATE_CLASS="temp-warm"
+    elif [ "$MAX_TEMP" -ge 30 ]; then
+        STATE_CLASS="temp-normal"
+    else
+        STATE_CLASS="temp-cool"
+    fi
+
+    echo "{\"text\": \" ${MAX_TEMP}°C\", \"tooltip\": \"$TOOLTIP\", \"class\": [\"custom-water-temp\", \"$STATE_CLASS\"], \"percentage\": $MAX_TEMP}"
 }
 
 get_disk() {
@@ -200,12 +235,21 @@ get_disk() {
     done
 
     if [ "$MAX_TEMP" -eq 0 ]; then
-        TEMP_TEXT="N/A"
+        TEMP_TEXT=" N/A"
     else
-        TEMP_TEXT="${MAX_TEMP}°C"
+        if [ "$MAX_TEMP" -ge 65 ]; then
+            DISK_TEMP_COLOR="$COLOR_HOT"
+        elif [ "$MAX_TEMP" -ge 50 ]; then
+            DISK_TEMP_COLOR="$COLOR_WARM"
+        elif [ "$MAX_TEMP" -ge 38 ]; then
+            DISK_TEMP_COLOR="$COLOR_NORMAL"
+        else
+            DISK_TEMP_COLOR="$COLOR_COOL"
+        fi
+        TEMP_TEXT="<span color='${DISK_TEMP_COLOR}'> ${MAX_TEMP}°C</span>"
     fi
 
-    echo "{\"text\": \" $USAGE   $TEMP_TEXT\", \"tooltip\": \"$TOOLTIP_TEXT\", \"class\": \"custom-disk\"}"
+    echo "{\"text\": \" $USAGE  $TEMP_TEXT\", \"tooltip\": \"$TOOLTIP_TEXT\", \"class\": \"custom-disk\"}"
 }
 
 case "$1" in

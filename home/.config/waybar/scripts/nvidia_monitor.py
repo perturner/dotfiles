@@ -137,6 +137,31 @@ def get_cpu_package_power():
     except Exception:
         return None
 
+def get_temp_color(temp, thresholds):
+    """
+    Returns theme hex color for temperature based on (normal, warm, hot) thresholds.
+    """
+    cool, normal, warm, hot = "#7E9CD8", "#98BB6C", "#E6C384", "#E82424"
+    try:
+        wal_path = os.path.expanduser("~/.cache/wal/colors.json")
+        with open(wal_path, "r") as f:
+            c = json.load(f).get("colors", {})
+            cool = c.get("color4", cool)
+            normal = c.get("color10", normal)
+            warm = c.get("color11", warm)
+            hot = c.get("color9", hot)
+    except Exception:
+        pass
+
+    t_normal, t_warm, t_hot = thresholds
+    if temp >= t_hot:
+        return hot
+    if temp >= t_warm:
+        return warm
+    if temp >= t_normal:
+        return normal
+    return cool
+
 def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else "gpu"
 
@@ -159,7 +184,8 @@ def main():
 
         if mode == "gpu":
             # Text: Util% Temp°C VRAM_GiB
-            text = f"{util:>3}% {temp:>3}°C {mem_gb:>4.1f}GiB"
+            t_color = get_temp_color(temp, (40, 60, 75))
+            text = f"{util:>3}% <span color='{t_color}'>{temp:>3}°C</span> {mem_gb:>4.1f}GiB"
             tooltip = f"GPU Usage: {util}%\nTemp: {temp}°C\nVRAM: {int(mem_used)}MB / {int(mem_total)}MB ({mem_perc}%)\nPower: {power_W}W"
             
             out = {
@@ -174,8 +200,9 @@ def main():
             psu_watts, psu_temp = get_corsair_psu_stats()
             cpu_watts = get_cpu_package_power()
             cpu_text = f"{cpu_watts:>3}W" if cpu_watts is not None else "N/A"
+            psu_color = get_temp_color(psu_temp, (38, 50, 62))
             
-            text = f"⚡ CPU: {cpu_text} | GPU: {power_W:>3}W | Total: {psu_watts:>3}W |  {psu_temp:>2}°C"
+            text = f"CPU: {cpu_text} | GPU: {power_W:>3}W | Total: {psu_watts:>3}W | <span color='{psu_color}'> {psu_temp:>2}°C</span>"
             tooltip = f"CPU Package Power: {cpu_text}\nGPU Power Draw: {power_W}W\nPSU Power Draw: {psu_watts}W\nPSU Temp: {psu_temp}°C"
 
             out = {

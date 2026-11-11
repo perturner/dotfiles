@@ -17,7 +17,7 @@ The environment relies on `fish` as the interactive shell, `waybar` for the stat
 ### Status Bar (Waybar)
 *   **Config File:** `~/.config/waybar/config`
 *   **Style:** `~/.config/waybar/style.css`
-*   **Features:** Custom modules for hardware monitoring (CPU, GPU, RAM, Disk, Wattage), UPS status, peripherals battery, and network traffic.
+*   **Features:** Custom modules for hardware monitoring (CPU, GPU, RAM, Disk, Wattage), peripherals battery, and network traffic.
 
 ### Shell (Fish)
 *   **Config File:** `~/.config/fish/config.fish`

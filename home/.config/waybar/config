@@ -14,11 +14,11 @@
         "pulseaudio",
         "network",
         "group/group-cpu",
-        "group/group-memory"
+        "group/group-memory",
+        "hyprland/window"
     ],
     "modules-center": [
-        "hyprland/workspaces",
-        "hyprland/window",
+        "ext/workspaces",
         "clock#time"
     ],
     "modules-right": [
@@ -59,9 +59,10 @@
         "tooltip": true
     },
 
-    "hyprland/workspaces": {
-        "disable-scroll": true,
+    "ext/workspaces": {
+        "on-click": "activate",
         "all-outputs": false,
+        "sort-by-id": true,
         "format": "{icon}",
         "format-icons": {
             "1": "1",
@@ -139,8 +140,7 @@
     "group/group-power": {
         "orientation": "horizontal",
         "modules": [
-            "custom/wattage",
-            "custom/ups"
+            "custom/wattage"
         ]
     },
 
@@ -149,14 +149,6 @@
         "modules": [
             "custom/mouse"
         ]
-    },
-
-    "custom/ups": {
-        "exec": "~/.config/waybar/scripts/ups-monitor.sh",
-        "return-type": "json",
-        "format": "{}",
-        "interval": 10,
-        "tooltip": true
     },
 
     "custom/mouse": {

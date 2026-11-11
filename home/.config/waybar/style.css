@@ -97,7 +97,7 @@ window#waybar.sidebar-reserve {
     border: 1px solid @color4;
 }
 
-#cpu, #custom-cpu-temp, #custom-water-temp, #custom-load, #memory, #custom-ram-temp, #custom-disk, #custom-wattage, #custom-ups, #custom-mouse {
+#cpu, #custom-cpu-temp, #custom-water-temp, #custom-load, #memory, #custom-ram-temp, #custom-disk, #custom-wattage, #custom-mouse {
     background-color: transparent;
     opacity: 1;
     margin: 0 5px;
@@ -109,16 +109,41 @@ window#waybar.sidebar-reserve {
 
 /* Specific colors for modules inside groups */
 #cpu { color: @color2; }
-#custom-cpu-temp { color: @color1; }
+#custom-cpu-temp { color: @color10; }
 #custom-water-temp { color: @color4; }
 #custom-load { color: @color2; }
 #memory { color: @color3; }
-#custom-ram-temp { color: @color1; }
+#custom-ram-temp { color: @color10; }
 #custom-disk { color: @color6; }
 #custom-wattage { color: @color5; }
-#custom-ups { color: @color5; }
 #custom-mouse { color: @color3; }
 #custom-refresh { color: @color4; }
+
+/* Dynamic temperature state colors */
+#custom-cpu-temp.temp-cool,
+#custom-water-temp.temp-cool,
+#custom-ram-temp.temp-cool {
+    color: @color4;
+}
+
+#custom-cpu-temp.temp-normal,
+#custom-water-temp.temp-normal,
+#custom-ram-temp.temp-normal {
+    color: @color10;
+}
+
+#custom-cpu-temp.temp-warm,
+#custom-water-temp.temp-warm,
+#custom-ram-temp.temp-warm {
+    color: @color11;
+}
+
+#custom-cpu-temp.temp-hot,
+#custom-water-temp.temp-hot,
+#custom-ram-temp.temp-hot {
+    color: @color9;
+    font-weight: bold;
+}
 
 #custom-gpu {
     color: @color4;

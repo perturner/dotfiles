@@ -5,3 +5,19 @@ home/.config/wireguard/*.conf
 
 # Machine-local GTK bookmarks (contains per-machine mount/user paths)
 home/.config/gtk-3.0/bookmarks
+
+# Git mergetool backup files
+*_BACKUP_*
+*_BASE_*
+*_LOCAL_*
+*_REMOTE_*
+*.orig
+
+# Auto-mutated runtime configs and caches
+common/.config/btop/btop.conf
+common/.config/htop/htoprc
+common/.config/mimeapps.list
+home/.config/BambuStudio/user/hints.cereal
+work/.cache/
+home/.cache/
+common/.cache/
