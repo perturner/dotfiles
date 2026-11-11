@@ -128,17 +128,20 @@ export VCPKG_DEFAULT_BINARY_CACHE=~/.vcpkg-cache
 
 # Attach to the persistent tmux server managed by the user service
 # (~/.config/systemd/user/tmux.service). The server lives in app.slice and
-# survives GNOME/GDM session restarts (e.g. nightly unattended-upgrades),
-# which requires `loginctl enable-linger $USER` (set once).
-#   tx           -> attach to an existing session (the 'main' session always exists)
-#   tx <name>    -> attach to <name>, creating it in the running server if absent
+# survives GNOME/GDM session restarts, which requires
+# `loginctl enable-linger $USER` (set once). The service auto-starts the
+# server, so tx just attaches -- it never starts the service, which would
+# spawn an extra session and is what broke attaching over SSH.
+#   tx           -> attach to the running server (last-used session)
+#   tx <name>    -> attach to <name>, creating it only if it does not exist
 tx() {
-    # Make sure the persistent server is up (no-op if the service already ran).
-    systemctl --user start tmux.service 2>/dev/null
     if [ -n "$1" ]; then
         tmux new-session -A -s "$1"
-    else
+    elif tmux has-session 2>/dev/null; then
         tmux attach
+    else
+        # No server/session at all: start one rather than failing.
+        tmux new-session
     fi
 }
 
