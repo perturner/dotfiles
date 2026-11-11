@@ -49,6 +49,22 @@ command -q starship; and starship init fish | source
 command -q direnv; and direnv hook fish | source
 zoxide init fish | source
 
+# Attach to the persistent tmux server managed by the user service
+# (~/.config/systemd/user/tmux.service). The server lives in app.slice and
+# survives GNOME/GDM session restarts (e.g. nightly unattended-upgrades),
+# which requires `loginctl enable-linger $USER` (set once).
+#   tx           -> attach to an existing session (the 'main' session always exists)
+#   tx <name>    -> attach to <name>, creating it in the running server if absent
+function tx
+    # Make sure the persistent server is up (no-op if the service already ran).
+    systemctl --user start tmux.service 2>/dev/null
+    if set -q argv[1]
+        tmux new-session -A -s $argv[1]
+    else
+        tmux attach
+    end
+end
+
 
 # Added by Antigravity CLI installer
 set -gx PATH "/home/per/.local/bin" $PATH
