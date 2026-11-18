@@ -34,6 +34,15 @@ return {
           -- Cleaner diagnostics
           DiagnosticUnderlineError = { undercurl = true, sp = colors.theme.diag.error },
           DiagnosticUnderlineWarn = { undercurl = true, sp = colors.theme.diag.warning },
+
+          -- Rainbow delimiter levels (see rainbow-delimiters spec in editor.lua).
+          -- Deliberately no red/pink so the outermost scope never looks like an error.
+          RainbowLvl1 = { fg = colors.theme.syn.fun },        -- blue
+          RainbowLvl2 = { fg = colors.theme.syn.identifier }, -- yellow
+          RainbowLvl3 = { fg = colors.theme.syn.string },     -- green
+          RainbowLvl4 = { fg = colors.theme.syn.keyword },    -- violet
+          RainbowLvl5 = { fg = colors.theme.syn.type },       -- aqua
+          RainbowLvl6 = { fg = colors.theme.syn.constant },   -- orange
         }
       end,
     })

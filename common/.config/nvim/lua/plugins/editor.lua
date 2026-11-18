@@ -48,9 +48,19 @@ return {
     {
         -- rainbow-delimiters auto-attaches via its own plugin/ file on FileType;
         -- it must load eagerly (not behind a lazy event) so that loader runs.
-        -- No setup() call is needed; configure via vim.g.rainbow_delimiters if desired.
+        -- No setup() call is needed; configured via vim.g.rainbow_delimiters.
+        -- The default first level is red, which reads as an error on the
+        -- outermost scope, so use our own non-red groups (defined in kanagawa.lua).
         "HiPhish/rainbow-delimiters.nvim",
         lazy = false,
+        init = function()
+            vim.g.rainbow_delimiters = {
+                highlight = {
+                    "RainbowLvl1", "RainbowLvl2", "RainbowLvl3",
+                    "RainbowLvl4", "RainbowLvl5", "RainbowLvl6",
+                },
+            }
+        end,
     },
     { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
     { "windwp/nvim-autopairs", event = "InsertEnter", config = true },
