@@ -57,7 +57,7 @@ return {
                 type = "gdb",
                 request = "launch",
                 program = function()
-                    return vim.fn.input("Executable: ", vim.fn.getcwd() .. "/build/linux-debug/", "file")
+                    return vim.fn.input("Executable: ", vim.fn.getcwd() .. "/build/target/host-debug/", "file")
                 end,
                 cwd = "${workspaceFolder}",
             },
@@ -69,7 +69,7 @@ return {
                     return vim.fn.input("Target (host:port): ", "192.168.1.100:2345")
                 end,
                 program = function()
-                    return vim.fn.input("Local binary: ", vim.fn.getcwd() .. "/build/remote-debug/", "file")
+                    return vim.fn.input("Local binary: ", vim.fn.getcwd() .. "/build/target/remote-debug/", "file")
                 end,
                 cwd = "${workspaceFolder}",
             },
